@@ -1,0 +1,28 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Executables
+*.exe
+*.out
+
+# Go binary
+*.exe
+*.test
+*.prof
+
+# Go build output
+build/
+
+# Go test cache and coverage files
+*.test
+*.cover
+
+# Go generated files
+*.pb.go
+*.pb.gw.go
+*.swagger.json
+
+# Go vendor directory
+vendor/
