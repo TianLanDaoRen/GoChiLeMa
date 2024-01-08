@@ -8,15 +8,18 @@ import (
 	"github.com/energye/energy/v2/common"
 )
 
+//go:embed resources
 var resources embed.FS
 
 func main() {
 	cef.GlobalInit(nil, &resources)
 	app := cef.NewApplication()
 	app.SetEnableGPU(true)
+	app.SetDisableWebSecurity(true)
+	app.SetDisableSiteIsolationTrials(true)
 
 	config := cef.BrowserWindow.Config
-	config.Title = "吃了吗 v1.0.0"
+	config.Title = "吃了吗 v1.0.1"
 	if common.IsLinux() {
 		config.Icon = "resources/img/icon.png"
 	} else {
