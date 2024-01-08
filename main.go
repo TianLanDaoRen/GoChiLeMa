@@ -21,7 +21,7 @@ func main() {
 	// app.SetRemoteDebuggingPort(23457)
 
 	config := cef.BrowserWindow.Config
-	config.Title = "吃了吗 v1.0.1"
+	config.Title = "吃了吗 v2.24.1.8"
 	if common.IsLinux() {
 		config.Icon = "resources/img/icon.png"
 	} else {
