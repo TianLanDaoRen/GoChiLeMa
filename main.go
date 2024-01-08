@@ -15,7 +15,7 @@ var resources embed.FS
 func main() {
 	cef.GlobalInit(nil, &resources)
 	app := cef.NewApplication()
-	app.SetEnableGPU(true)
+	app.SetEnableGPU(false)
 	app.SetDisableWebSecurity(true)
 	app.SetDisableSiteIsolationTrials(true)
 	// app.SetRemoteDebuggingPort(23457)
@@ -37,6 +37,7 @@ func main() {
 	chromiumConfig.SetEnableDevTools(true)
 	chromiumConfig.SetEnableMenu(false)
 	chromiumConfig.SetEnabledJavascript(true)
+	chromiumConfig.SetEnableWindowPopup(true)
 
 	//内置静态资源服务的安全key和value设置
 	//通过设置AssetsServerHeaderKeyName和AssetsServerHeaderKeyValue在一定程度上保证资源只能在应用内访问，即使在应用外使用正确的IP和端口号也无法访问到资源
