@@ -10,12 +10,6 @@ function onChiLeMa() {
     // ipc.emit("requestContactUs", []);
 }
 
-function onCloseApp() {
-    // emit request CloseApp
-    ipc.emit("requestCloseApp", []);
-    console.log("requestCloseApp");
-}
-
 function onRequestWeather() {
     // emit request Weather
     ipc.emit("requestWeather", []);

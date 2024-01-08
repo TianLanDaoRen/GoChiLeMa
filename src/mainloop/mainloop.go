@@ -5,10 +5,13 @@ import (
 	"GoChiLeMa/src/weather"
 	"fmt"
 	"os/exec"
+	"runtime"
+	"syscall"
 	"time"
 
 	"github.com/energye/energy/v2/cef"
 	"github.com/energye/energy/v2/cef/ipc"
+	"github.com/energye/energy/v2/cef/ipc/context"
 	"github.com/energye/golcl/lcl"
 	"github.com/energye/golcl/lcl/rtl/version"
 )
@@ -82,6 +85,27 @@ func onRequestWeather() {
 }
 
 func listenOnIpc() {
+	// ipc.On("requestWindowState", func(context context.IContext) {
+	// 	bw := cef.BrowserWindow.GetWindowInfo(context.BrowserId())
+	// 	state := context.ArgumentList().GetIntByIndex(0)
+	// 	if state == 0 {
+	// 		bw.Minimize()
+	// 	} else if state == 1 {
+	// 		bw.Maximize()
+	// 	} else if state == 3 {
+	// 		if bw.IsFullScreen() {
+	// 			bw.ExitFullScreen()
+	// 		} else {
+	// 			bw.FullScreen()
+	// 		}
+	// 	}
+	// })
+
+	ipc.On("requestWindowClose", func(context context.IContext) {
+		bw := cef.BrowserWindow.GetWindowInfo(context.BrowserId())
+		bw.CloseBrowserWindow()
+	})
+
 	ipc.On("requestContactUs", func() {
 		ipc.Emit("receiveAllowContactUs", "moriartylimitter@outlook.com", "TianLanDaoRen")
 	})
@@ -91,13 +115,12 @@ func listenOnIpc() {
 		cef.BrowserWindow.MainWindow().Close()
 	})
 
-	ipc.On("requestOpenLinkInEdge", func(url string) {
+	ipc.On("requestOpenLinkInExternalBrowser", func(url string) {
 		cmd := exec.Command("cmd", "/c", "start", url)
-		stdout, err := cmd.Output()
-		if err != nil {
-			println(err)
+		if runtime.GOOS == "windows" {
+			cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 		}
-		println(string(stdout))
+		cmd.Run()
 	})
 
 	ipc.On("requestWeather", onRequestWeather)
@@ -110,21 +133,26 @@ func MainLoop() {
 	}
 }
 
-func BrowserInit(event *cef.BrowserEvent, window cef.IBrowserWindow) {
+func BrowserInit(event *cef.BrowserEvent, bw cef.IBrowserWindow) {
 	listenOnIpc()
 	event.SetOnLoadEnd(func(sender lcl.IObject, browser *cef.ICefBrowser, frame *cef.ICefFrame, httpStatusCode int32, window cef.IBrowserWindow) {
+		// Set user agent
 		info := cef.BrowserWindow.GetWindowInfo(browser.BrowserId())
 		dict := &cef.ICefDictionaryValue{}
 		dict.SetString("userAgent", "Mozilla/5.0 (Linux; Android 11; M2102K1G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Mobile Safari/537.36")
 		info.Chromium().ExecuteDevToolsMethod(0, "", dict)
+		// IPC
 		ipc.Emit("receiveOsInfo", version.OSVersion.ToString())
-		var windowType string
+		// Set window style
 		if window.IsLCL() {
-			windowType = "LCL"
-		} else {
-			windowType = "VF"
+			// 边框圆角
+			window.AsLCLBrowserWindow().SetRoundRectRgn(10)
+			window.AsLCLBrowserWindow().BrowserWindow().SetRoundRectRgn(10)
+			// 更新窗口以显示圆角
+			rect := window.Bounds()
+			window.SetBounds(rect.X, rect.Y, rect.Width, rect.Height+1)
+			window.SetBounds(rect.X, rect.Y, rect.Width, rect.Height)
 		}
-		ipc.Emit("windowType", windowType)
 		go MainLoop()
 	})
 }

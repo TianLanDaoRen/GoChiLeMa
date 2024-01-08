@@ -28,11 +28,12 @@ func main() {
 		config.Icon = "resources/img/icon.ico"
 	}
 	config.Url = "http://localhost:23456/index.html"
-	config.Width = 1200
-	config.Height = 800
-	config.MinWidth = 600
-	config.MinHeight = 400
+	config.Width = 1024
+	config.Height = 768
+	config.MinWidth = 1024
+	config.MinHeight = 1024
 	config.EnableDragFile = true
+	config.EnableHideCaption = true
 	chromiumConfig := config.ChromiumConfig()
 	chromiumConfig.SetEnableDevTools(true)
 	chromiumConfig.SetEnableMenu(false)

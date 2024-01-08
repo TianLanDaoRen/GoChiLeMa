@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" class="has-background-light">
+<html lang="zh-cn">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,16 +13,32 @@
             <span>v1.0.1</span>
         </span>
     </title>
-    <link rel="stylesheet" href="css/bulma.css">
-    <link rel="stylesheet" href="css/main.css">
-    <script src="https://kit.fontawesome.com/fde73c65f6.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/navbarMain.js"></script>
+    <script type="text/javascript" src="js/frame_bar.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/utils.js"></script>
 </head>
 
 <body>
     <section class="section">
+        <div class="column">
+            <div class="box">
+                <div class="box-content has-text-success has-text-centered">
+                    <h1 class="title">
+                        我的信息
+                    </h1>
+                    <div class="notification is-info">
+                        <strong>我的邮箱</strong>
+                        </br>
+                        <span id="emailInfo">保密</span>
+                        </br>
+                        <strong>我的微信</strong>
+                        </br>
+                        <span id="vxInfo">保密</span>
+                        </br>
+                        <span>（点击下方联系我们）</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="columns is-multiline is-centered is-desktop">
             <div class="column">
                 <div class="box">
@@ -32,6 +48,22 @@
                         </h1>
                         <div class="notification is-info is-hidden" id="osNotification">
                             <span id="osInfo"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box">
+                    <div class="box-content has-text-dark has-text-centered">
+                        <h1 class="title">
+                            天气信息
+                        </h1>
+                        <div class="notification is-info is-hidden" id="weatherNotification">
+                            <strong><span id="timeInfo"></span></strong>
+                            </br>
+                            <strong><span id="tempInfo"></span></strong>
+                            </br>
+                            <strong><span id="tempDesc"></span></strong>
                         </div>
                     </div>
                 </div>
@@ -64,42 +96,6 @@
                             <strong>AS：</strong>
                             <span id="asInfo"></span>
                             </br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="box">
-                    <div class="box-content has-text-dark has-text-centered">
-                        <h1 class="title">
-                            天气信息
-                        </h1>
-                        <div class="notification is-info is-hidden" id="weatherNotification">
-                            <strong><span id="timeInfo"></span></strong>
-                            </br>
-                            <strong><span id="tempInfo"></span></strong>
-                            </br>
-                            <strong><span id="tempDesc"></span></strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="box">
-                    <div class="box-content has-text-success has-text-centered">
-                        <h1 class="title">
-                            我的信息
-                        </h1>
-                        <div class="notification is-info">
-                            <strong>我的邮箱</strong>
-                            </br>
-                            <span id="emailInfo">保密</span>
-                            </br>
-                            <strong>我的微信</strong>
-                            </br>
-                            <span id="vxInfo">保密</span>
-                            </br>
-                            <span>（点击右上角联系我们）</span>
                         </div>
                     </div>
                 </div>
