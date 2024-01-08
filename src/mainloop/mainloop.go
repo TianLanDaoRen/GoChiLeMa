@@ -85,21 +85,21 @@ func onRequestWeather() {
 }
 
 func listenOnIpc() {
-	// ipc.On("requestWindowState", func(context context.IContext) {
-	// 	bw := cef.BrowserWindow.GetWindowInfo(context.BrowserId())
-	// 	state := context.ArgumentList().GetIntByIndex(0)
-	// 	if state == 0 {
-	// 		bw.Minimize()
-	// 	} else if state == 1 {
-	// 		bw.Maximize()
-	// 	} else if state == 3 {
-	// 		if bw.IsFullScreen() {
-	// 			bw.ExitFullScreen()
-	// 		} else {
-	// 			bw.FullScreen()
-	// 		}
-	// 	}
-	// })
+	ipc.On("requestWindowState", func(context context.IContext) {
+		bw := cef.BrowserWindow.GetWindowInfo(context.BrowserId())
+		state := context.ArgumentList().GetIntByIndex(0)
+		if state == 0 {
+			bw.Minimize()
+		} else if state == 1 {
+			bw.Maximize()
+		} else if state == 3 {
+			if bw.IsFullScreen() {
+				bw.ExitFullScreen()
+			} else {
+				bw.FullScreen()
+			}
+		}
+	})
 
 	ipc.On("requestWindowClose", func(context context.IContext) {
 		bw := cef.BrowserWindow.GetWindowInfo(context.BrowserId())
