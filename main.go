@@ -18,7 +18,7 @@ func main() {
 	app.SetEnableGPU(false)
 	app.SetDisableWebSecurity(true)
 	app.SetDisableSiteIsolationTrials(true)
-	// app.SetRemoteDebuggingPort(23457)
+	app.SetRemoteDebuggingPort(23457)
 
 	config := cef.BrowserWindow.Config
 	config.Title = "吃了吗 v2.24.1.8"

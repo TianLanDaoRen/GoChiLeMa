@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="css/bulma.css">
 <link rel="stylesheet" href="css/main.css">
+<script type="text/javascript" src="js/font-awesome.js"></script>
 <script type="text/javascript" src="js/utils.js"></script>
-<script src="https://kit.fontawesome.com/fde73c65f6.js" crossorigin="anonymous"></script>
 <nav class="navbar has-shadow is-fixed-top" role="navigation" aria-label="frame bar">
     <div class="navbar-brand" style="-webkit-app-region: drag;">
-        <a class="navbar-item">
-            <span class="icon-text has-text-info is-size-5">
+        <a class="navbar-item has-background-info">
+            <span class="icon-text has-text-light is-size-5">
                 <span><strong>吃了吗</strong></span>
                 <span>
                     <i class="fas fa-utensils "></i>
@@ -13,9 +13,9 @@
             </span>
         </a>
     </div>
-    <div class="navbar-menu is-active">
+    <div class="navbar-menu is-active" style="-webkit-app-region: drag;">
         <div class="navbar-end">
-            <div class="navbar-item">
+            <div class="navbar-item" style="-webkit-app-region: none;">
                 <div class="buttons">
                     <a class="button is-success is-size-7 is-outlined" onclick="onMinWindow()"
                         style="font-family: Marlett24;">
@@ -23,7 +23,7 @@
                     </a>
                 </div>
             </div>
-            <div class="navbar-item">
+            <div class="navbar-item" style="-webkit-app-region: none;">
                 <div class="buttons">
                     <a class="button is-danger is-size-7 is-outlined" onclick="onCloseWindow()"
                         style="font-family: Marlett24;">
@@ -57,7 +57,7 @@
                     功能
                 </a>
                 <div class="navbar-dropdown">
-                    <a class="navbar-item" href="unlock_music.html">
+                    <a class="navbar-item" href="unlock-music.html">
                         音乐解锁
                     </a>
                     <hr class="navbar-divider">
