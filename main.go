@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoChiLeMa/src/config"
 	"GoChiLeMa/src/mainloop"
 	"embed"
 
@@ -15,7 +16,9 @@ func main() {
 	app := cef.NewApplication()
 	app.SetEnableGPU(false)
 	app.SetDisableWebSecurity(true)
-	// app.SetRemoteDebuggingPort(23457)
+	if config.DEBUGING {
+		app.SetRemoteDebuggingPort(config.DEBUGING_PORT)
+	}
 
 	mainloop.SetupBrowserWindowConfig()
 	mainloop.SetupHttpService(&resources)

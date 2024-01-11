@@ -123,7 +123,7 @@ func SetupBrowserWindowConfig() {
 	config.EnableDragFile = true
 	config.EnableHideCaption = true
 	chromiumConfig := config.ChromiumConfig()
-	chromiumConfig.SetEnableDevTools(false)
+	chromiumConfig.SetEnableDevTools(CONFIG.DEBUGING)
 	chromiumConfig.SetEnableMenu(false)
 	chromiumConfig.SetEnabledJavascript(true)
 	chromiumConfig.SetEnableWindowPopup(true)

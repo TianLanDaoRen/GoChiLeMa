@@ -39,8 +39,9 @@ func CheckValidRequest(r *http.Request) bool {
 		fmt.Println("sign is empty")
 		return false
 	}
-	// Calc md5(ts+sn+"apiaccesskey")
-	hash := md5.Sum([]byte(ts + sn + "apiaccesskey"))
+	// Calc md5(${sn}apiaccesskey||${ts}apiaccesskey||${route})
+	route := r.URL.Path[len("/api/"):]
+	hash := md5.Sum([]byte(sn + "apiaccesskey||" + ts + "apiaccesskey||" + route))
 	validSign := hex.EncodeToString(hash[:])
 	return validSign == sign
 }

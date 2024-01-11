@@ -14,7 +14,7 @@ let API_ROOT = "http://localhost:23458/api";
 // Callback functions
 async function onContactUs() {
     console.log("requestContactUs");
-    let api_url = getApiUrl("contactus");
+    let api_url = utils.getApiUrl("contactus");
     let response = await fetch(api_url);
     let data = await response.json();
     console.log(data);
@@ -28,7 +28,7 @@ async function onContactUs() {
 
 async function onRequestIpAndLocation() {
     console.log("requestIP");
-    let api_url = getApiUrl("ip");
+    let api_url = utils.getApiUrl("ip");
     let response = await fetch(api_url);
     let data = await response.json();
     console.log(data);
@@ -53,7 +53,7 @@ async function onRequestIpAndLocation() {
 
 async function onRequestWeather() {
     console.log("requestWeather");
-    let api_url = getApiUrl("weather");
+    let api_url = utils.getApiUrl("weather");
     let response = await fetch(api_url);
     let data = await response.json();
     console.log(data);
@@ -65,15 +65,6 @@ async function onRequestWeather() {
     document.getElementById("tempInfo").innerText = temp + "℃";
     document.getElementById("tempDesc").innerText = description;
     document.getElementById("weatherNotification").classList.remove("is-hidden");
-}
-
-function getApiUrl(route) {
-    let ts = new Date().getTime();
-    let sn = Math.random();
-    let api_url = `${API_ROOT}/${route}?ts=${ts}&sn=${sn}`;
-    let sign = MD5(`${ts}${sn}apiaccesskey`);
-    api_url += `&sign=${sign}`;
-    return api_url
 }
 
 // on receive Tick

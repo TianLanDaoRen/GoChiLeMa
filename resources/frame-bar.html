@@ -12,6 +12,11 @@
                 </span>
             </span>
         </a>
+        <a class="navbar-item" style="-webkit-app-region: drag;">
+            <span class="has-text-dark is-size-6">
+                <strong id="window-title"></strong>
+            </span>
+        </a>
     </div>
     <div class="navbar-menu is-active" style="-webkit-app-region: drag;">
         <div class="navbar-end">
@@ -97,5 +102,11 @@
                 });
             });
         });
+        (function () {
+            // Get the current title
+            var title = document.title;
+            // Set the window title
+            document.getElementById('window-title').innerHTML = title;
+        })();
     </script>
 </nav>
