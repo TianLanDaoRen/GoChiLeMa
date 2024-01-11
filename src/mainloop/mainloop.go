@@ -109,7 +109,7 @@ func SetupHttpService(resources *embed.FS) {
 
 func SetupBrowserWindowConfig() {
 	config := cef.BrowserWindow.Config
-	config.Title = "吃了吗 v2.24.1.8"
+	config.Title = "吃了吗 v3.24.1.11"
 	if common.IsLinux() {
 		config.Icon = "resources/img/icon.png"
 	} else {
@@ -123,7 +123,7 @@ func SetupBrowserWindowConfig() {
 	config.EnableDragFile = true
 	config.EnableHideCaption = true
 	chromiumConfig := config.ChromiumConfig()
-	chromiumConfig.SetEnableDevTools(true)
+	chromiumConfig.SetEnableDevTools(false)
 	chromiumConfig.SetEnableMenu(false)
 	chromiumConfig.SetEnabledJavascript(true)
 	chromiumConfig.SetEnableWindowPopup(true)

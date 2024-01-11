@@ -15,8 +15,7 @@ func main() {
 	app := cef.NewApplication()
 	app.SetEnableGPU(false)
 	app.SetDisableWebSecurity(true)
-	app.SetDisableSiteIsolationTrials(true)
-	app.SetRemoteDebuggingPort(23457)
+	// app.SetRemoteDebuggingPort(23457)
 
 	mainloop.SetupBrowserWindowConfig()
 	mainloop.SetupHttpService(&resources)
