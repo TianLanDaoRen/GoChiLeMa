@@ -46,12 +46,12 @@
 >> MacOS: `go build -ldflags "-s -w"`
 > 
 > Use Energy
->> `energy build .`
+>> `energy build -u --upxFlag="--best --no-color" .`
 > 
 
 ## 制作安装包 - Making installation packages
 > 1. 构建应用 - Building Applications
->> `energy build .`
+>> `energy build -u --upxFlag="--best --no-color" .`
 > 
 > 2. 执行制作安装包命令 - Run the create installation package command
 >> `energy package .`

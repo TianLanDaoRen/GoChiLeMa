@@ -1,36 +1,80 @@
+let API_ROOT = "http://localhost:23458/api";
+
+(async function () {
+    onRequestIpAndLocation().then(function () {
+        console.log("onRequestIpAndLocationDone");
+    });
+
+    onRequestWeather().then(function () {
+        console.log("onRequestWeatherDone");
+    });
+})();
+
+
 // Callback functions
-function onContactUs() {
-    // emit request ContactUs
-    ipc.emit("requestContactUs", []);
+async function onContactUs() {
     console.log("requestContactUs");
-}
-
-function onChiLeMa() {
-    // emit request onChiLeMa
-    // ipc.emit("requestContactUs", []);
-}
-
-function onCloseApp() {
-    // emit request CloseApp
-    ipc.emit("requestCloseApp", []);
-    console.log("requestCloseApp");
-}
-
-function onRequestWeather() {
-    // emit request Weather
-    ipc.emit("requestWeather", []);
-    console.log("requestWeather");
-}
-
-// IPC events
-onRequestWeather();
-
-// on receive AllowContactUs
-ipc.on("receiveAllowContactUs", function (email, vx) {
-    console.log("receiveAllowContactUs");
+    let api_url = getApiUrl("contactus");
+    let response = await fetch(api_url);
+    let data = await response.json();
+    console.log(data);
+    // Retrieve email and vx
+    let email = data.email;
+    let vx = data.vx;
+    // Update email and vx
     document.getElementById("emailInfo").innerText = email;
     document.getElementById("vxInfo").innerText = vx;
-});
+}
+
+async function onRequestIpAndLocation() {
+    console.log("requestIP");
+    let api_url = getApiUrl("ip");
+    let response = await fetch(api_url);
+    let data = await response.json();
+    console.log(data);
+    // Retrieve
+    let ip = data.ip;
+    let city = data.city;
+    let lat = data.lat;
+    let lon = data.lon;
+    let timezone = data.timezone;
+    let isp = data.isp;
+    let as = data.as;
+    // Update
+    document.getElementById("ipInfo").innerText = ip;
+    document.getElementById("locationInfo").innerText = city;
+    document.getElementById("latInfo").innerText = lat;
+    document.getElementById("lonInfo").innerText = lon;
+    document.getElementById("timezoneInfo").innerText = timezone;
+    document.getElementById("ispInfo").innerText = isp;
+    document.getElementById("asInfo").innerText = as;
+    document.getElementById("ipNotification").classList.remove("is-hidden");
+}
+
+async function onRequestWeather() {
+    console.log("requestWeather");
+    let api_url = getApiUrl("weather");
+    let response = await fetch(api_url);
+    let data = await response.json();
+    console.log(data);
+    // Retrieve weather info
+    let temp = data.temp;
+    let description = data.description;
+    // Update weather info
+    document.getElementById("timeInfo").innerText = new Date().toString();
+    document.getElementById("tempInfo").innerText = temp + "℃";
+    document.getElementById("tempDesc").innerText = description;
+    document.getElementById("weatherNotification").classList.remove("is-hidden");
+}
+
+function getApiUrl(route) {
+    let ts = new Date().getTime();
+    let sn = Math.random();
+    let api_url = `${API_ROOT}/${route}?ts=${ts}&sn=${sn}`;
+    let sign = MD5(`${ts}${sn}apiaccesskey`);
+    api_url += `&sign=${sign}`;
+    return api_url
+}
 
 // on receive Tick
 ipc.on("receiveTick", function () {
@@ -53,34 +97,4 @@ ipc.on("receiveOsInfo", function (os) {
     console.log("receiveOsInfo");
     document.getElementById("osInfo").innerText = os;
     document.getElementById("osNotification").classList.remove("is-hidden");
-});
-
-// on receive Ip
-ipc.on("receiveIp", function (ip) {
-    console.log("receiveIp");
-    document.getElementById("ipInfo").innerText = ip;
-});
-
-// on receive Location
-ipc.on("receiveLocation", function (city, lat, lon, timezone, isp, as) {
-    console.log("receiveLocation");
-    document.getElementById("locationInfo").innerText = city;
-    document.getElementById("latInfo").innerText = lat;
-    document.getElementById("lonInfo").innerText = lon;
-    document.getElementById("timezoneInfo").innerText = timezone;
-    document.getElementById("ispInfo").innerText = isp;
-    document.getElementById("asInfo").innerText = as;
-    document.getElementById("ipNotification").classList.remove("is-hidden");
-});
-
-// on receive Weather
-ipc.on("receiveWeather", function (temp, description) {
-    console.log("receiveWeather");
-    // Retrieve time info from local machine
-    document.getElementById("timeInfo").innerText = new Date().toLocaleTimeString();
-    // Update weather info
-    document.getElementById("tempInfo").innerText = temp + "℃";
-    document.getElementById("tempDesc").innerText = description;
-    document.getElementById("weatherNotification").classList.remove("is-hidden");
-
 });
