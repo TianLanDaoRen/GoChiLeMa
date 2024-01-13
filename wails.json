@@ -1,0 +1,17 @@
+{
+  "version": "4.24.1.13",
+  "name": "GoChiLeMaWails",
+  "outputfilename": "GoChiLeMa",
+  "author": {
+    "name": "TianLanDaoRen",
+    "email": "moriartylimitter@outlook.com"
+  },
+  "info": {
+    "companyName": "EZStudio",
+    "productName": "GoChiLeMa",
+    "productVersion": "4.24.1.13",
+    "copyright": "Copyright (@) 2024 TianLanDaoRen",
+    "comments": "GoChiLeMa is built with Wails."
+  },
+  "obfuscated": true
+}

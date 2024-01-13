@@ -1,10 +1,10 @@
 package api_weather
 
 import (
-	"GoChiLeMa/src/global"
-	"GoChiLeMa/src/location"
-	"GoChiLeMa/src/route/utils"
-	WEATHER "GoChiLeMa/src/weather"
+	"GoChiLeMaWails/src/global"
+	"GoChiLeMaWails/src/location"
+	"GoChiLeMaWails/src/route/utils"
+	WEATHER "GoChiLeMaWails/src/weather"
 	"fmt"
 	"net/http"
 	"time"

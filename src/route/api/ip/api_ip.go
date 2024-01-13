@@ -1,9 +1,9 @@
 package api_ip
 
 import (
-	"GoChiLeMa/src/global"
-	"GoChiLeMa/src/location"
-	"GoChiLeMa/src/route/utils"
+	"GoChiLeMaWails/src/global"
+	"GoChiLeMaWails/src/location"
+	"GoChiLeMaWails/src/route/utils"
 	"fmt"
 	"net/http"
 )

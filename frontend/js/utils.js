@@ -1,17 +1,29 @@
+let API_ROOT = "http://localhost:23456/api";
+
+function Fetch(url, method = "GET") {
+    return fetch(url, {
+        method: method,
+        headers: {
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST,GET",
+        },
+    })
+}
+
 function onOpenLinkInExternalBrowser(url) {
-    ipc.emit('requestOpenLinkInExternalBrowser', [url]);
+    console.log("onOpenLinkInExternalBrowser");
+    window.App.OpenLinkInExternalBrowser(url);
 }
 
 function onMinWindow() {
-    // emit request MinWindow
-    ipc.emit("requestWindowState", [0]);
     console.log("requestWindowMin");
+    window.runtime.WindowMinimise();
 }
 
 function onCloseWindow() {
-    // emit request CloseWindow
-    ipc.emit("requestWindowClose", []);
     console.log("requestWindowClose");
+    window.runtime.Quit();
 }
 
 const utils = (function () {
