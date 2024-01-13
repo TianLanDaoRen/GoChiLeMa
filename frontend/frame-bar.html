@@ -1,11 +1,16 @@
+<meta name="wails-options" content="noautoinject" />
 <link rel="stylesheet" href="css/bulma.css">
 <link rel="stylesheet" href="css/main.css">
-<script type="text/javascript" src="js/font-awesome.js"></script>
-<script type="text/javascript" src="js/utils.js"></script>
+<script src="js/loader.js" type="module"></script>
+<script src="js/font-awesome.js"></script>
+<script src="js/utils.js"></script>
+<script src="/wails/ipc.js"></script>
+<script src="/wails/runtime.js"></script>
 <nav class="navbar has-shadow is-fixed-top" role="navigation" aria-label="frame bar">
-    <div class="navbar-brand" style="-webkit-app-region: drag;">
-        <a class="navbar-item has-background-info">
-            <span class="icon-text has-text-light is-size-5">
+    <div class="navbar-brand" style="--wails-draggable: drag;">
+        <a class="navbar-item has-background-info"
+            style="background: linear-gradient(to right, #3e8ed0, #5aa6e4, #72b5ec);">
+            <span class="icon-text has-text-light is-size-4">
                 <span><strong>吃了吗</strong></span>
                 <span>
                     <i class="fas fa-utensils "></i>
@@ -13,9 +18,17 @@
             </span>
         </a>
     </div>
-    <div class="navbar-menu is-active" style="-webkit-app-region: drag;">
+    <div class="navbar-menu is-active"
+        style="--wails-draggable: drag; background: linear-gradient(to right, #eff5fb, 30%, white);">
+        <div class="navbar-start" style="background: linear-gradient(to right, #72b5ec, #9bcffa, #eff5fb);">
+            <a class="navbar-item" style="--wails-draggable: drag;">
+                <span class="is-size-6">
+                    <strong><span class="has-text-info-light" id="window-title"></span></strong>
+                </span>
+            </a>
+        </div>
         <div class="navbar-end">
-            <div class="navbar-item" style="-webkit-app-region: none;">
+            <div class="navbar-item" style="--wails-draggable: no-drag;">
                 <div class="buttons">
                     <a class="button is-success is-size-7 is-outlined" onclick="onMinWindow()"
                         style="font-family: Marlett24;">
@@ -23,7 +36,7 @@
                     </a>
                 </div>
             </div>
-            <div class="navbar-item" style="-webkit-app-region: none;">
+            <div class="navbar-item" style="--wails-draggable: no-drag;">
                 <div class="buttons">
                     <a class="button is-danger is-size-7 is-outlined" onclick="onCloseWindow()"
                         style="font-family: Marlett24;">
@@ -46,10 +59,10 @@
 
     <div id="navbar-main" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item" href="index.html">
+            <a class="navbar-item" href="index.html" target="_self">
                 首页
             </a>
-            <a class="navbar-item" href="about.html">
+            <a class="navbar-item" href="about.html" target="_self">
                 关于
             </a>
             <div class="navbar-item has-dropdown has-dropdown-up is-hoverable">
@@ -57,7 +70,7 @@
                     功能
                 </a>
                 <div class="navbar-dropdown">
-                    <a class="navbar-item" href="unlock-music.html">
+                    <a class="navbar-item" href="unlock-music.html" target="_self">
                         音乐解锁
                     </a>
                     <hr class="navbar-divider">
@@ -71,7 +84,7 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-info" onclick="onContactUs()">
+                    <a class="button is-info" onclick="onRequestContactUs()">
                         <strong>联系我们</strong>
                     </a>
                 </div>
@@ -97,5 +110,11 @@
                 });
             });
         });
+        (function () {
+            // Get the current title
+            var title = document.title;
+            // Set the window title
+            document.getElementById('window-title').innerHTML = title;
+        })();
     </script>
 </nav>

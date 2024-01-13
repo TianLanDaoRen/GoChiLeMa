@@ -1,5 +1,0 @@
-package config
-
-var PORT = 23456
-var API_PORT = 23458
-var API_ACCESS_KEY = "3b646a7286be775135406967269d7062"

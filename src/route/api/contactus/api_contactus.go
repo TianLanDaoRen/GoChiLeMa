@@ -1,7 +1,7 @@
 package api_contactus
 
 import (
-	"GoChiLeMa/src/route/utils"
+	"GoChiLeMaWails/src/route/utils"
 	"net/http"
 )
 

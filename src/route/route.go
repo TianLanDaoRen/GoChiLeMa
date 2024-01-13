@@ -1,10 +1,11 @@
 package route
 
 import (
-	"GoChiLeMa/src/config"
-	api_contactus "GoChiLeMa/src/route/api/contactus"
-	api_ip "GoChiLeMa/src/route/api/ip"
-	api_weather "GoChiLeMa/src/route/api/weather"
+	"GoChiLeMaWails/src/global"
+	api_contactus "GoChiLeMaWails/src/route/api/contactus"
+	api_ip "GoChiLeMaWails/src/route/api/ip"
+	api_osinfo "GoChiLeMaWails/src/route/api/osinfo"
+	api_weather "GoChiLeMaWails/src/route/api/weather"
 	"fmt"
 	"net/http"
 )
@@ -14,13 +15,15 @@ var RouteHandlers map[string]http.Handler
 func Init() {
 	RouteHandlers = make(map[string]http.Handler)
 	// Register routes here
+	RegisterRouteHandlerFunc("/api/osinfo", api_osinfo.OsinfoRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/contactus", api_contactus.ContactusRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/ip", api_ip.IpRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/weather", api_weather.WeatherRouteHandlerFunc)
 	fmt.Println("Registered routes:", RouteHandlers)
 	// Handle all routes and start the server
 	go HandleAllRoutes()
-	go http.ListenAndServe(fmt.Sprintf(":%d", config.API_PORT), nil)
+	go http.ListenAndServe(fmt.Sprintf(":%d", global.API_PORT), nil)
+	fmt.Println("Listening on port", global.API_PORT)
 }
 
 // RegisterRouteHandler registers a route handler for a given route.

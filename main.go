@@ -1,25 +1,43 @@
 package main
 
 import (
-	"GoChiLeMa/src/mainloop"
 	"embed"
 
-	"github.com/energye/energy/v2/cef"
+	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
-//go:embed resources
-var resources embed.FS
+//go:embed all:frontend
+var assets embed.FS
 
 func main() {
-	cef.GlobalInit(nil, &resources)
-	app := cef.NewApplication()
-	app.SetEnableGPU(false)
-	app.SetDisableWebSecurity(true)
-	// app.SetRemoteDebuggingPort(23457)
+	// Create an instance of the app structure
+	app := NewApp()
 
-	mainloop.SetupBrowserWindowConfig()
-	mainloop.SetupHttpService(&resources)
+	// Create application with options
+	err := wails.Run(&options.App{
+		Title:     "吃了吗 - Wails Demo",
+		Width:     1024,
+		Height:    768,
+		MinWidth:  1024,
+		MinHeight: 768,
+		Frameless: true,
+		AssetServer: &assetserver.Options{
+			Assets: assets,
+		},
+		OnDomReady:       app.domReady,
+		BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 200},
+		OnStartup:        app.startup,
+		Bind: []interface{}{
+			app,
+		},
+		Debug: options.Debug{
+			OpenInspectorOnStartup: true,
+		},
+	})
 
-	cef.BrowserWindow.SetBrowserInit(mainloop.BrowserInit)
-	cef.Run(app)
+	if err != nil {
+		println("Error:", err.Error())
+	}
 }
