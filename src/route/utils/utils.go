@@ -1,8 +1,7 @@
 package utils
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"GoChiLeMaWails/src/encrypto"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -42,9 +41,9 @@ func CheckValidRequest(r *http.Request) bool {
 		fmt.Println("sign is empty")
 		return false
 	}
-	// Calc md5(${sn}apiaccesskey||${ts}apiaccesskey||${route})
+	// Calc Encrypt(${sn}apiaccesskey||${ts}apiaccesskey||${route})
 	route := r.URL.Path[len("/api/"):]
-	hash := md5.Sum([]byte(sn + "apiaccesskey||" + ts + "apiaccesskey||" + route))
-	validSign := hex.EncodeToString(hash[:])
+	crypto := encrypto.NewEncrypto()
+	validSign := crypto.Encrypt(sn + "apiaccesskey||" + ts + "apiaccesskey||" + route)
 	return validSign == sign
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoChiLeMaWails/src/encrypto"
 	"embed"
 
 	"github.com/wailsapp/wails/v2"
@@ -14,6 +15,7 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+	crypto := encrypto.NewEncrypto()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -31,6 +33,7 @@ func main() {
 		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,
+			crypto,
 		},
 		Debug: options.Debug{
 			OpenInspectorOnStartup: true,

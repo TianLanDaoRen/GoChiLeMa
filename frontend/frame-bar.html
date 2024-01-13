@@ -1,7 +1,6 @@
 <meta name="wails-options" content="noautoinject" />
 <link rel="stylesheet" href="css/bulma.css">
 <link rel="stylesheet" href="css/main.css">
-<script src="js/loader.js" type="module"></script>
 <script src="js/font-awesome.js"></script>
 <script src="js/utils.js"></script>
 <script src="/wails/ipc.js"></script>
@@ -33,6 +32,14 @@
                     <a class="button is-success is-size-7 is-outlined" onclick="onMinWindow()"
                         style="font-family: Marlett24;">
                         <strong style="font-size: large;">0</strong>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-item" style="--wails-draggable: no-drag;">
+                <div class="buttons">
+                    <a class="button is-link is-size-7 is-outlined" onclick="onToggleWindow()"
+                        style="font-family: Marlett24;">
+                        <strong id="toggle-button" style="font-size: large;">1</strong>
                     </a>
                 </div>
             </div>
