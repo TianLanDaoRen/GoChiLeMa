@@ -1,9 +1,10 @@
 // Callback functions
 function onRequestOsInfo() {
     console.log("requestOsInfo");
-    utils.getApiUrl("osinfo").then((api_url) => {
+    utils.getApiUrlAndBody("osinfo").then((api) => {
+        let api_url = api[0], body = api[1];
         // Fetch data
-        Fetch(api_url, "GET")
+        Fetch(api_url, "POST", body)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -22,9 +23,10 @@ function onRequestOsInfo() {
 
 function onRequestContactUs() {
     console.log("requestContactUs");
-    utils.getApiUrl("contactus").then((api_url) => {
+    utils.getApiUrlAndBody("contactus").then((api) => {
+        let api_url = api[0], body = api[1];
         // Fetch data
-        Fetch(api_url, "GET")
+        Fetch(api_url, "POST", body)
             .then(response => response.json())
             .then(data => {
                 // Retrieve email and vx
@@ -42,8 +44,10 @@ function onRequestContactUs() {
 
 function onRequestIpAndLocation() {
     console.log("requestIP");
-    utils.getApiUrl("ip").then((api_url) => {
-        Fetch(api_url, "GET")
+    utils.getApiUrlAndBody("ip").then((api) => {
+        let api_url = api[0], body = api[1];
+        // Fetch data
+        Fetch(api_url, "POST", body)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -73,8 +77,10 @@ function onRequestIpAndLocation() {
 
 function onRequestWeather() {
     console.log("requestWeather");
-    utils.getApiUrl("weather").then((api_url) => {
-        Fetch(api_url, "GET")
+    utils.getApiUrlAndBody("weather").then((api) => {
+        let api_url = api[0], body = api[1];
+        // Fetch data
+        Fetch(api_url, "POST", body)
             .then(response => response.json())
             .then(data => {
                 console.log(data);

@@ -1,16 +1,6 @@
 let API_ROOT = "http://localhost:23456/api";
 
-function Fetch(url, method = "GET") {
-    return fetch(url, {
-        method: method,
-        headers: {
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST,GET",
-        },
-    })
-}
-
+// Callbacks
 function onOpenLinkInExternalBrowser(url) {
     console.log("onOpenLinkInExternalBrowser");
     window.GoJs.OpenLinkInExternalBrowser(url);
@@ -36,21 +26,41 @@ function onCloseWindow() {
     window.runtime.Quit();
 }
 
+// Route utils
+function Fetch(url, method, body) {
+    return fetch(url, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST,GET,OPTIONS",
+        },
+        body: body,
+    })
+}
+
 const utils = (function () {
+    function getApiUrlAndBody(route) {
+        return new Promise((resolve) => {
+            let ts = new Date().getTime();
+            let sn = Math.random() * 1e5;
+            let api_url = `${API_ROOT}/${route}`;
+            window.GoJs.Encrypt(`${sn}apiaccesskey||${ts}apiaccesskey||${route}`)
+                .then((sign) => {
+                    let body = JSON.stringify({
+                        "ts": ts,
+                        "sn": sn,
+                        "sign": sign,
+                    });
+                    resolve([api_url, body]);
+                });
+        });
+    }
+
     // Public
     return {
-        getApiUrl(route) {
-            return new Promise((resolve) => {
-                let ts = new Date().getTime();
-                let sn = Math.random() * 1e5;
-                let api_url = `${API_ROOT}/${route}?ts=${ts}&sn=${sn}`;
-                window.GoJs.Encrypt(`${sn}apiaccesskey||${ts}apiaccesskey||${route}`)
-                    .then((sign) => {
-                        api_url += `&sign=${sign}`;
-                        resolve(api_url);
-                    });
-            });
-        }
+        getApiUrlAndBody: getApiUrlAndBody,
     };
 })();
 

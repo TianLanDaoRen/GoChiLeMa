@@ -3,34 +3,25 @@ package api_ip
 import (
 	"GoChiLeMaWails/src/global"
 	"GoChiLeMaWails/src/location"
-	"GoChiLeMaWails/src/route/utils"
+	route_utils "GoChiLeMaWails/src/route/utils"
 	"fmt"
 	"net/http"
 )
 
 func IpRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	// make default json response
-	ip := make(map[string]interface{})
-	ip["ip"] = "undefined"
-	ip["city"] = "undefined"
-	ip["lat"] = "undefined"
-	ip["lon"] = "undefined"
-	ip["timezone"] = "undefined"
-	ip["isp"] = "undefined"
-	ip["as"] = "undefined"
-
 	// Check valid call
-	valid := utils.CheckValidRequest(r)
+	valid := route_utils.CheckValidRequest(r)
 	if !valid {
-		utils.WriteJSONResponse(w, ip)
+		invalid := route_utils.MakeDefaultJSONResponse(2401, "Invalid request")
+		route_utils.WriteJSONResponse(w, invalid)
 		return
 	}
 	// Get IP
 	if global.IP == "" {
 		iip, err := location.GetExternalIPv4()
 		if err != nil {
-			fmt.Println("Failed to get external IPv4")
-			utils.WriteJSONResponse(w, ip)
+			failed := route_utils.MakeDefaultJSONResponse(2402, "Failed to get external IPv4")
+			route_utils.WriteJSONResponse(w, failed)
 			return
 		}
 		global.IP = iip
@@ -39,8 +30,8 @@ func IpRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	if global.Lat == 0 || global.Lon == 0 || global.City == "" || global.Timezone == "" || global.ISP == "" || global.AS == "" {
 		loc, err := location.GetLocationInfo(global.IP)
 		if err != nil {
-			fmt.Println("Failed to get location information")
-			utils.WriteJSONResponse(w, ip)
+			failed := route_utils.MakeDefaultJSONResponse(2403, "Failed to get location information")
+			route_utils.WriteJSONResponse(w, failed)
 			return
 		}
 		global.Lat = loc.Lat
@@ -50,6 +41,7 @@ func IpRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 		global.ISP = loc.Isp
 		global.AS = loc.As
 	}
+	ip := make(map[string]interface{})
 	ip["ip"] = global.IP
 	ip["city"] = global.City
 	ip["lat"] = global.Lat
@@ -57,5 +49,5 @@ func IpRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	ip["timezone"] = global.Timezone
 	ip["isp"] = global.ISP
 	ip["as"] = global.AS
-	utils.WriteJSONResponse(w, ip)
+	route_utils.WriteJSONResponse(w, ip)
 }

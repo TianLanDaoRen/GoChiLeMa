@@ -7,23 +7,21 @@ package api_osinfo
 import "C"
 
 import (
-	"GoChiLeMaWails/src/route/utils"
+	route_utils "GoChiLeMaWails/src/route/utils"
 	"net/http"
 )
 
 func OsinfoRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	// make default json response
-	os := make(map[string]interface{})
-	os["info"] = "undefined"
-
 	// Check valid call
-	valid := utils.CheckValidRequest(r)
+	valid := route_utils.CheckValidRequest(r)
 	if !valid {
-		utils.WriteJSONResponse(w, os)
+		invalid := route_utils.MakeDefaultJSONResponse(2401, "Invalid request")
+		route_utils.WriteJSONResponse(w, invalid)
 		return
 	}
 	// Call C function
+	os := make(map[string]interface{})
 	osinfo := C.GetOsVersion()
 	os["info"] = C.GoString(osinfo)
-	utils.WriteJSONResponse(w, os)
+	route_utils.WriteJSONResponse(w, os)
 }

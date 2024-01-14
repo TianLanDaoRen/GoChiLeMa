@@ -3,7 +3,7 @@ package api_weather
 import (
 	"GoChiLeMaWails/src/global"
 	"GoChiLeMaWails/src/location"
-	"GoChiLeMaWails/src/route/utils"
+	route_utils "GoChiLeMaWails/src/route/utils"
 	WEATHER "GoChiLeMaWails/src/weather"
 	"fmt"
 	"net/http"
@@ -11,23 +11,19 @@ import (
 )
 
 func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	// make default json response
-	weather := make(map[string]interface{})
-	weather["temp"] = "undefined"
-	weather["description"] = "undefined"
-
 	// Check valid call
-	valid := utils.CheckValidRequest(r)
+	valid := route_utils.CheckValidRequest(r)
 	if !valid {
-		utils.WriteJSONResponse(w, weather)
+		invalid := route_utils.MakeDefaultJSONResponse(2401, "Invalid request")
+		route_utils.WriteJSONResponse(w, invalid)
 		return
 	}
 	// Get IP
 	if global.IP == "" {
 		ip, err := location.GetExternalIPv4()
 		if err != nil {
-			fmt.Println("Failed to get external IPv4")
-			utils.WriteJSONResponse(w, weather)
+			failed := route_utils.MakeDefaultJSONResponse(2402, "Failed to get external IPv4")
+			route_utils.WriteJSONResponse(w, failed)
 			return
 		}
 		global.IP = ip
@@ -36,8 +32,8 @@ func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	if global.Lat == 0 || global.Lon == 0 {
 		loc, err := location.GetLocationInfo(global.IP)
 		if err != nil {
-			fmt.Println("Failed to get location information")
-			utils.WriteJSONResponse(w, weather)
+			failed := route_utils.MakeDefaultJSONResponse(2403, "Failed to get location information")
+			route_utils.WriteJSONResponse(w, failed)
 			return
 		}
 		global.Lat = loc.Lat
@@ -53,8 +49,8 @@ func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 		}
 		weatherInfo, ok := weatherApi.GetWeather()
 		if !ok {
-			println("Failed to get weather information")
-			utils.WriteJSONResponse(w, weather)
+			failed := route_utils.MakeDefaultJSONResponse(2404, "Failed to get weather information")
+			route_utils.WriteJSONResponse(w, failed)
 			return
 		}
 		global.WeatherInfo = &WEATHER.Weather{}
@@ -72,8 +68,9 @@ func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	sunsetTimestamp := int64(global.WeatherInfo.Current.Sunset)
 	sunset := time.Unix(sunsetTimestamp, 0).UTC().Add(time.Hour * time.Duration(timezoneOffset)).Format("15:04:05")
 	description := fmt.Sprintf("%s，湿度%d%%，紫外线指数%.2f，云度%d%%，风速%.2fm/s，日出时间%s，日落时间%s", desc, humidity, uvi, clouds, windSpeed, sunrise, sunset)
+
+	weather := make(map[string]interface{})
 	weather["temp"] = temp
 	weather["description"] = description
-
-	utils.WriteJSONResponse(w, weather)
+	route_utils.WriteJSONResponse(w, weather)
 }
