@@ -3,6 +3,7 @@ function onRequestOsInfo() {
     console.log("requestOsInfo");
     utils.getApiUrlAndBody("osinfo").then((api) => {
         let api_url = api[0], body = api[1];
+        body = JSON.stringify(body);
         // Fetch data
         Fetch(api_url, "POST", body)
             .then(response => response.json())
@@ -25,6 +26,7 @@ function onRequestContactUs() {
     console.log("requestContactUs");
     utils.getApiUrlAndBody("contactus").then((api) => {
         let api_url = api[0], body = api[1];
+        body = JSON.stringify(body);
         // Fetch data
         Fetch(api_url, "POST", body)
             .then(response => response.json())
@@ -46,6 +48,7 @@ function onRequestIpAndLocation() {
     console.log("requestIP");
     utils.getApiUrlAndBody("ip").then((api) => {
         let api_url = api[0], body = api[1];
+        body = JSON.stringify(body);
         // Fetch data
         Fetch(api_url, "POST", body)
             .then(response => response.json())
@@ -79,6 +82,7 @@ function onRequestWeather() {
     console.log("requestWeather");
     utils.getApiUrlAndBody("weather").then((api) => {
         let api_url = api[0], body = api[1];
+        body = JSON.stringify(body);
         // Fetch data
         Fetch(api_url, "POST", body)
             .then(response => response.json())
@@ -92,6 +96,23 @@ function onRequestWeather() {
                 document.getElementById("tempInfo").innerText = temp + "℃";
                 document.getElementById("tempDesc").innerText = description;
                 document.getElementById("weatherNotification").classList.remove("is-hidden");
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+}
+
+function onRequestGoSort() {
+    console.log("requestGoSort");
+    utils.getApiUrlAndBody("gosort").then((api) => {
+        let api_url = api[0], body = api[1];
+        body = JSON.stringify(body);
+        // Fetch data
+        Fetch(api_url, "POST", body)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
             })
             .catch(error => {
                 console.error("Error:", error);

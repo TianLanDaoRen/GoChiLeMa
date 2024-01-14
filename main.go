@@ -29,7 +29,7 @@ func main() {
 			Assets: assets,
 		},
 		OnDomReady:       app.domReady,
-		BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 200},
+		BackgroundColour: &options.RGBA{R: 200, G: 200, B: 200, A: 255},
 		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,

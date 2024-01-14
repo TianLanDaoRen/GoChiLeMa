@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>排序</title>
+    <script type="text/javascript" src="js/frame-bar.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="columns is-multiline is-centered is-desktop">
+            <div class="column is-full">
+                <div class="content is-large has-text-centered">
+                    <h1 class="title has-text-info">
+                        <span class="icon-text">
+                            排序测试
+                        </span>
+                    </h1>
+                </div>
+            </div>
+            <div class="column is-full">
+                <div class="content is-large has-text-centered">
+                    <label class="label is-large">乱序数字</label>
+                    <div class="field has-addons">
+                        <div class="control has-icons-left is-expanded is-large" id="random-numbers-control">
+                            <input class="input is-large" type="text" placeholder="输入数字，以逗号分隔" id="random-numbers">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-list-ol"></i>
+                            </span>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-large is-light" onclick="onGenRandomNumbers()">
+                                <span class="icon">
+                                    <i class="fas fa-random"></i>
+                                </span>
+                                <span>随机生成乱序数字</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label is-large">顺序数字</label>
+                        <div class="control has-icons-left is-large" id="sorted-numbers-control">
+                            <input class="input is-large" type="text" id="sorted-numbers" readonly>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-sort-numeric-asc"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="content is-large has-text-centered">
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-link is-large" onclick="onSortNumbers()">
+                                <span class="icon">
+                                    <i class="fas fa-cog"></i>
+                                </span>
+                                <span>开始排序</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function onGenRandomNumbers() {
+            let control = document.getElementById("random-numbers-control");
+            let input = document.getElementById("random-numbers");
+            // Add loading animation
+            control.classList.add("is-loading");
+            // Gen 100000 random numbers in [-10000, 10000] in a micro queue
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    let numbers = [];
+                    for (let i = 0; i < 100000; i++) {
+                        numbers.push(Math.floor(Math.random() * 200000) - 100000);
+                    }
+                    resolve(numbers);
+                }, 0);
+            }).then((numbers) => {
+                // Set input value
+                input.value = numbers.join(",");
+                // Remove loading animation
+                control.classList.remove("is-loading");
+            });
+        }
+        function onSortNumbers() {
+            let control = document.getElementById("sorted-numbers-control");
+            let input = document.getElementById("sorted-numbers");
+            // Add loading animation
+            control.classList.add("is-loading");
+            // Get random numbers
+            let numbers = document.getElementById("random-numbers").value.split(",");
+            // Convert string to number
+            numbers = numbers.map((value) => {
+                return Number(value);
+            });
+            // Sort numbers in backend using c language and record consumed time
+            let start = new Date().getTime();
+            utils.getApiUrlAndBody("csort").then((api) => {
+                let api_url = api[0], body = api[1];
+                body["numbers"] = numbers;
+                body = JSON.stringify(body);
+                // Fetch data
+                Fetch(api_url, "POST", body)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // Retrieve sorted numbers
+                        let sorted = data["numbers"];
+                        // Record consumed time
+                        let end = new Date().getTime();
+                        let time = end - start;
+                        // Show consumed time
+                        console.log("C语言排序完成，耗时" + time + "毫秒");
+                        console.log("C语言排序结果：" + sorted);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+            // Sort numbers in backend using golang and record consumed time
+            start = new Date().getTime();
+            utils.getApiUrlAndBody("gosort").then((api) => {
+                let api_url = api[0], body = api[1];
+                body["numbers"] = numbers;
+                body = JSON.stringify(body);
+                // Fetch data
+                Fetch(api_url, "POST", body)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // Retrieve sorted numbers
+                        let sorted = data["numbers"];
+                        // Record consumed time
+                        let end = new Date().getTime();
+                        let time = end - start;
+                        // Show consumed time
+                        console.log("go语言排序完成，耗时" + time + "毫秒");
+                        console.log("go语言排序结果：" + sorted);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+            // Sort numbers in frontend using javascript and record consumed time
+            start = new Date().getTime();
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Copy numbers
+                    let nums = [...numbers];
+                    nums.sort((a, b) => a - b);
+                    resolve(nums);
+                }, 0);
+            }).then((sorted) => {
+                // Record consumed time
+                let end = new Date().getTime();
+                let time = end - start;
+                // Show consumed time
+                console.log("Javascript排序完成，耗时" + time + "毫秒");
+                console.log("Javascript排序结果：" + sorted);
+                // Set input value
+                input.value = sorted.join(",");
+                // Remove loading animation
+                control.classList.remove("is-loading");
+            });
+        }
+    </script>
+</body>
+
+</html>

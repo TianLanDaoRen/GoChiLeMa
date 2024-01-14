@@ -48,11 +48,11 @@ const utils = (function () {
             let api_url = `${API_ROOT}/${route}`;
             window.GoJs.Encrypt(`${sn}apiaccesskey||${ts}apiaccesskey||${route}`)
                 .then((sign) => {
-                    let body = JSON.stringify({
+                    let body = {
                         "ts": ts,
                         "sn": sn,
                         "sign": sign,
-                    });
+                    };
                     resolve([api_url, body]);
                 });
         });

@@ -2,11 +2,14 @@ package route_utils
 
 import (
 	"GoChiLeMaWails/src/encrypto"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 )
+
+type JsonBody interface{}
 
 type RequestBody struct {
 	Sign string  `json:"sign"`
@@ -39,29 +42,35 @@ func WriteJSONResponse(w http.ResponseWriter, jsonBody interface{}) {
 	fmt.Fprint(w, jsonString)
 }
 
-func CheckValidRequest(r *http.Request) bool {
+func ReadJsonBody(r *http.Request, jb JsonBody) error {
 	// Check request method
 	if r.Method != "POST" {
-		fmt.Println("Invalid request method:", r.Method)
-		return false
+		return fmt.Errorf("INVALID REQUEST METHOD: %v", r.Method)
 	}
 	// Check request content type
 	if r.Header.Get("Content-Type") != "application/json" {
-		fmt.Println("Invalid request content type:", r.Header.Get("Content-Type"))
-		return false
+		return fmt.Errorf("INVALID REQUEST CONTENT-TYPE: %v", r.Header.Get("Content-Type"))
 	}
-	// Print request body
-	bodyStr, err := io.ReadAll(r.Body)
+	bodyBytes, err := io.ReadAll(r.Body)
+	// Restore request body
+	r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
 	if err != nil {
-		fmt.Println("Failed to read request body:", err)
-		return false
+		return err
 	}
-	defer r.Body.Close()
+	// Get request body
+	err = json.Unmarshal(bodyBytes, jb)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func CheckValidRequest(r *http.Request) bool {
 	// Get request body
 	var body RequestBody
-	err = json.Unmarshal(bodyStr, &body)
+	err := ReadJsonBody(r, &body)
 	if err != nil {
-		fmt.Println("Failed to decode request body:", err)
+		fmt.Println("Failed to read request body:", err)
 		return false
 	}
 	// Check valid sign

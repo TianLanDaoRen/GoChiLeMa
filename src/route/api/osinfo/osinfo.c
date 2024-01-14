@@ -80,10 +80,29 @@ char *GetOsVersion()
         return "Error getting Windows version information";
     }
 }
+#elif __linux__
+#include <sys/utsname.h>
+
+char *GetOsVersion()
+{
+    struct utsname uts;
+    if (uname(&uts) == -1)
+    {
+        printf("Error getting Linux version information\n");
+        return "Error getting Linux version information";
+    }
+    char *osVersion = (char *)malloc(200 * sizeof(char));
+    sprintf(osVersion, "%s %s %s %s", uts.nodename, uts.sysname, uts.release, uts.machine);
+    return osVersion;
+}
+#elif __APPLE__
+char *GetOsVersion()
+{
+    return "MacOS";
+}
 #else
 char *GetOsVersion()
 {
-    printf("Unknown OS Version\n");
-    return "Unknown OS Version";
+    return "Unknown OS";
 }
 #endif
