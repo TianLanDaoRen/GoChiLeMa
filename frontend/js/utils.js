@@ -12,6 +12,7 @@ function onMinWindow() {
 }
 
 function onToggleWindow() {
+    console.log("requestToggleWindow");
     window.runtime.WindowIsMaximised().then((isMaximised) => {
         if (isMaximised) {
             window.runtime.WindowUnmaximise();

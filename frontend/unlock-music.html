@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" class="bg-base-300">
 
 <head>
     <meta charset="utf-8">
@@ -115,5 +115,31 @@
     <script src="js/chunk-vendors-legacy.5db7ca01.js" nomodule></script>
     <script src="js/app-legacy.a3e0590b.js" nomodule></script>
 </body>
+
+<script>
+    let interval = setInterval(function () {
+        // Set audio style
+        let audio = document.getElementsByTagName("audio")[0];
+        if (audio) {
+            audio.style = "display: -webkit-inline-box;";
+            console.log("Set audio style");
+            clearInterval(interval);
+        }
+        // Set el-upload-dragger style
+        let elUploadDragger = document.querySelector(".el-upload-dragger");
+        if (elUploadDragger) {
+            elUploadDragger.style = "background-color: oklch(var(--b2));";
+            console.log("Set el-upload-dragger style");
+            clearInterval(interval);
+        }
+        // Set el-table style
+        let elTable = document.querySelector(".el-table");
+        if (elTable) {
+            elTable.classList.add("table");
+            console.log("Set el-table style");
+            clearInterval(interval);
+        }
+    }, 5);
+</script>
 
 </html>

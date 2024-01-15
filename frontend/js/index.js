@@ -13,7 +13,6 @@ function onRequestOsInfo() {
                 let info = data.info;
                 // Update os info
                 document.getElementById("osInfo").innerText = info;
-                document.getElementById("osNotification").classList.remove("is-hidden");
             }
             )
             .catch(error => {
@@ -70,7 +69,6 @@ function onRequestIpAndLocation() {
                 document.getElementById("timezoneInfo").innerText = timezone;
                 document.getElementById("ispInfo").innerText = isp;
                 document.getElementById("asInfo").innerText = as;
-                document.getElementById("ipNotification").classList.remove("is-hidden");
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -95,7 +93,6 @@ function onRequestWeather() {
                 document.getElementById("timeInfo").innerText = new Date().toString();
                 document.getElementById("tempInfo").innerText = temp + "℃";
                 document.getElementById("tempDesc").innerText = description;
-                document.getElementById("weatherNotification").classList.remove("is-hidden");
             })
             .catch(error => {
                 console.error("Error:", error);

@@ -18,6 +18,10 @@
     src: url('../fonts/Marlett.ttf') format('truetype');
 }
 
+html {
+    background-size: 100% 100%;
+}
+
 body {
     -moz-user-select: none;
     /* Firefox私有属性 */
@@ -31,4 +35,18 @@ body {
     /* Opera私有属性 */
     user-select: none;
     /* CSS3属性 */
+    padding-bottom: 65px;
+}
+
+audio {
+    display: -webkit-inline-box;
+}
+
+.has-shadow {
+    box-shadow: 0 0 0 2px oklch(var(--b2));
+}
+
+.btm-nav {
+    height: 60px;
+    margin: 3px;
 }

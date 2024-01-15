@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" class="bg-base-300">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,69 +9,88 @@
 </head>
 
 <body>
-    <section class="section">
-        <div class="columns is-multiline is-centered is-desktop">
-            <div class="column is-full">
-                <div class="content is-large has-text-centered">
-                    <h1 class="title has-text-info">
-                        <span class="icon-text">
-                            排序测试
+    <div class="overflow-x-auto px-2 text-center">
+        <table class="table">
+            <thead class="text-center text-xl">
+                <tr>
+                    <th>
+                        说明
+                    </th>
+                    <th>
+                        输入
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <th>
+                        乱序数字
+                        <span>
+                            <i class="fas fa-sort"></i>
                         </span>
-                    </h1>
-                </div>
-            </div>
-            <div class="column is-full">
-                <div class="content is-large has-text-centered">
-                    <label class="label is-large">乱序数字</label>
-                    <div class="field has-addons">
-                        <div class="control has-icons-left is-expanded is-large" id="random-numbers-control">
-                            <input class="input is-large" type="text" placeholder="输入数字，以逗号分隔" id="random-numbers">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-list-ol"></i>
+                    </th>
+                    <td>
+                        <span>
+                            <input class="input text-xl" type="text" placeholder="输入数字，以逗号分隔" id="random-numbers">
+                            <span id="random-numbers-control"></span>
+                        </span>
+
+                    </td>
+                    <td>
+                        <button class="btn" onclick="onGenRandomNumbers()">
+                            <span class="icon">
+                                <i class="fas fa-random"></i>
                             </span>
-                        </div>
-                        <div class="control">
-                            <button class="button is-link is-large is-light" onclick="onGenRandomNumbers()">
-                                <span class="icon">
-                                    <i class="fas fa-random"></i>
-                                </span>
-                                <span>随机生成乱序数字</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label is-large">顺序数字</label>
-                        <div class="control has-icons-left is-large" id="sorted-numbers-control">
-                            <input class="input is-large" type="text" id="sorted-numbers" readonly>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-sort-numeric-asc"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column is-half">
-                <div class="content is-large has-text-centered">
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-link is-large" onclick="onSortNumbers()">
-                                <span class="icon">
-                                    <i class="fas fa-cog"></i>
-                                </span>
-                                <span>开始排序</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                            <span>随机生成乱序数字</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        顺序数字
+                        <span>
+                            <i class="fas fa-sort-numeric-asc"></i>
+                        </span>
+                    </th>
+                    <td>
+                        <span>
+                            <input class="input text-xl" type="text" id="sorted-numbers" readonly>
+                            <span id="sorted-numbers-control"></span>
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn" onclick="onCopyNumbers(copy_modal)">
+                            复制
+                        </button>
+                        <dialog id="copy_modal" class="modal">
+                            <div class="modal-box">
+                                <h3 class="font-bold text-lg text-center">已复制到剪贴板</h3>
+                            </div>
+                            <form method="dialog" class="modal-backdrop">
+                                <button>close</button>
+                            </form>
+                        </dialog>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-lg" onclick="onSortNumbers()">
+            <span class="icon">
+                <i class="fas fa-cog"></i>
+            </span>
+            <span>开始排序</span>
+        </button>
+    </div>
+
     <script>
         function onGenRandomNumbers() {
             let control = document.getElementById("random-numbers-control");
             let input = document.getElementById("random-numbers");
             // Add loading animation
-            control.classList.add("is-loading");
+            control.classList.add("loading", "loading-ring", "loading-xl");
             // Gen 100000 random numbers in [-10000, 10000] in a micro queue
             new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -84,15 +103,17 @@
             }).then((numbers) => {
                 // Set input value
                 input.value = numbers.join(",");
-                // Remove loading animation
-                control.classList.remove("is-loading");
+                // Remove loading animation in 300ms
+                setTimeout(() => {
+                    control.classList.remove("loading", "loading-ring", "loading-xl");
+                }, 300);
             });
         }
         function onSortNumbers() {
             let control = document.getElementById("sorted-numbers-control");
             let input = document.getElementById("sorted-numbers");
             // Add loading animation
-            control.classList.add("is-loading");
+            control.classList.add("loading", "loading-ring", "loading-xl");
             // Get random numbers
             let numbers = document.getElementById("random-numbers").value.split(",");
             // Convert string to number
@@ -165,9 +186,21 @@
                 console.log("Javascript排序结果：" + sorted);
                 // Set input value
                 input.value = sorted.join(",");
-                // Remove loading animation
-                control.classList.remove("is-loading");
+                // Remove loading animation in 300ms
+                setTimeout(() => {
+                    control.classList.remove("loading", "loading-ring", "loading-xl");
+                }, 300);
             });
+        }
+        function onCopyNumbers(modal) {
+            let input = document.getElementById("sorted-numbers");
+            input.select();
+            document.execCommand("copy");
+            modal.showModal();
+            // Close modal in 1000ms
+            setTimeout(() => {
+                modal.close();
+            }, 1000);
         }
     </script>
 </body>

@@ -19,7 +19,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:     "吃了吗 - Wails Demo",
+		Title:     "吃了吗 - GoChiLeMa",
 		Width:     1024,
 		Height:    768,
 		MinWidth:  1024,
@@ -29,7 +29,7 @@ func main() {
 			Assets: assets,
 		},
 		OnDomReady:       app.domReady,
-		BackgroundColour: &options.RGBA{R: 200, G: 200, B: 200, A: 255},
+		BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 80},
 		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,

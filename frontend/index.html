@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" class="bg-base-300">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,90 +10,62 @@
 </head>
 
 <body>
-    <section class="section">
-        <div class="column">
-            <div class="box">
-                <div class="box-content has-text-success has-text-centered">
-                    <h1 class="title">
+    <div class="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm px-2">
+        <div class="card glass bg-base-100 shadow-xl text-base-content">
+            <div class="card-body items-center text-center prose">
+                <h1 class="card-title">
+                    IP信息
+                </h1>
+                <strong>IPv4地址：</strong>
+                <span id="ipInfo"></span>
+                <strong>归属地：</strong>
+                <span id="locationInfo"></span>
+                <strong>纬度：</strong>
+                <span id="latInfo"></span>
+                <strong>经度：</strong>
+                <span id="lonInfo"></span>
+                <strong>时区：</strong>
+                <span id="timezoneInfo"></span>
+                <strong>网络服务提供商：</strong>
+                <span id="ispInfo"></span>
+                <strong>AS：</strong>
+                <span id="asInfo"></span>
+            </div>
+        </div>
+        <div class="grid gap-4">
+            <div class="card glass bg-base-100 shadow-xl text-base-content">
+                <div class="card-body items-center text-center prose">
+                    <h1 class="card-title">
+                        系统信息
+                    </h1>
+                    <span id="osInfo"></span>
+                </div>
+            </div>
+            <div class="card glass bg-base-100 shadow-xl text-base-content">
+                <div class="card-body items-center text-center prose">
+                    <h1 class="card-title">
                         我的信息
                     </h1>
-                    <div class="notification is-info">
-                        <strong>我的邮箱</strong>
-                        </br>
-                        <span id="emailInfo">保密</span>
-                        </br>
-                        <strong>我的微信</strong>
-                        </br>
-                        <span id="vxInfo">保密</span>
-                        </br>
-                        <span>（点击下方联系我们）</span>
-                    </div>
+                    <strong>我的邮箱</strong>
+                    <span id="emailInfo">保密</span>
+                    <strong>我的微信</strong>
+                    <span id="vxInfo">保密</span>
+                    <span>（点击下方联系我们）</span>
+                </div>
+            </div>
+            <div class="card glass bg-base-100 shadow-xl text-base-content">
+                <div class="card-body items-center text-center prose">
+                    <h1 class="card-title">
+                        天气信息
+                    </h1>
+                    <strong><span id="timeInfo"></span></strong>
+                    <strong><span id="tempInfo"></span></strong>
+                    <strong><span id="tempDesc"></span></strong>
                 </div>
             </div>
         </div>
-        <div class="columns is-multiline is-centered is-desktop">
-            <div class="column">
-                <div class="box">
-                    <div class="box-content has-text-dark has-text-centered">
-                        <h1 class="title">
-                            系统信息
-                        </h1>
-                        <div class="notification is-info is-hidden" id="osNotification">
-                            <span id="osInfo"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="box">
-                    <div class="box-content has-text-dark has-text-centered">
-                        <h1 class="title">
-                            天气信息
-                        </h1>
-                        <div class="notification is-info is-hidden" id="weatherNotification">
-                            <strong><span id="timeInfo"></span></strong>
-                            </br>
-                            <strong><span id="tempInfo"></span></strong>
-                            </br>
-                            <strong><span id="tempDesc"></span></strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="box">
-                    <div class="box-content has-text-dark has-text-centered">
-                        <h1 class="title">
-                            IP信息
-                        </h1>
-                        <div class="notification is-info is-hidden" id="ipNotification">
-                            <strong>IPv4地址：</strong>
-                            <span id="ipInfo"></span>
-                            </br>
-                            <strong>归属地：</strong>
-                            <span id="locationInfo"></span>
-                            </br>
-                            <strong>纬度：</strong>
-                            <span id="latInfo"></span>
-                            </br>
-                            <strong>经度：</strong>
-                            <span id="lonInfo"></span>
-                            </br>
-                            <strong>时区：</strong>
-                            <span id="timezoneInfo"></span>
-                            </br>
-                            <strong>运营商：</strong>
-                            <span id="ispInfo"></span>
-                            </br>
-                            <strong>AS：</strong>
-                            <span id="asInfo"></span>
-                            </br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
+    </div>
 </body>
 
 </html>
