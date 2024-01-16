@@ -21,9 +21,9 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:     "吃了吗 - GoChiLeMa",
 		Width:     1024,
-		Height:    768,
+		Height:    576,
 		MinWidth:  1024,
-		MinHeight: 768,
+		MinHeight: 576,
 		Frameless: true,
 		AssetServer: &assetserver.Options{
 			Assets: assets,

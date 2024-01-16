@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-cn" class="bg-base-300">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>吃了吗</title>
+    <script type="text/javascript" src="js/frame-bar.js"></script>
+</head>
+
+<body>
+    <article class="prose">
+        <div class="flex flex-col lg:flex-row px-3">
+            <div class="grid grid-cols-1 w-full content-around">
+                <div class="text-primary text-xl text-center items-center justify-center flex">
+                    <span class="font-bold justify-center">吃了吗</span>
+                    <span>
+                        <i class="fa fa-utensils"></i>
+                    </span>
+                    <span class="divider divider-horizontal"></span>
+                    <div class="grid grid-rows-auto grid-flow-dense">
+                        <span class="text-secondary font-bold">基于马尔科夫预测法</span>
+                        <span class="text-secondary font-bold">记录数据越多推荐越精准</span>
+                    </div>
+                </div>
+                </br>
+                <div class="text-secondary text-lg text-center">
+                    <i class="fa fa-quote-left fa-pull-left fa-border" aria-hidden="true"></i>
+                    <span>颐，贞吉。观颐，自求口实。</span>
+                    </br>
+                    <span>《象》曰：山下有雷，颐。君子以慎言语，节饮食。</span>
+                    <i class="fa fa-quote-right fa-pull-right fa-border" aria-hidden="true"></i>
+                </div>
+                </br>
+                <!-- list of buttons here -->
+                <div class="flex flex-col justify-center gap-2">
+                    <button class="btn btn-base-100 btn-lg text-lg" onclick="onRecordData()">
+                        <span>记录数据</span>
+                        <span>
+                            <i class="fa fa-pencil-square fa-fw"></i>
+                        </span>
+                    </button>
+                    <button class="btn btn-base-100 btn-lg text-lg" onclick="onEditData()">
+                        <span>查看记录</span>
+                        <span>
+                            <i class="fa fa-list-alt fa-fw"></i>
+                        </span>
+                    </button>
+                    <button class="btn btn-base-100 btn-lg text-lg" onclick="onRecommend()">
+                        <span>推荐餐品</span>
+                        <span>
+                            <i class="fa fa-cutlery fa-fw"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="divider lg:divider-horizontal"></div>
+            <div class="grid grid-cols-1 w-full flex-auto content-around">
+                <div class="function-area">
+                    <h1 class="text-secondary text-center text-xl">
+                        <span>
+                            <i class="fa fa-hand-o-left fa-fw fa-lg"></i>
+                        </span>
+                        <span class="font-bold">在左侧选择功能以开始</span>
+                    </h1>
+                </div>
+
+                <div class="record-data function-area hidden">
+                    <h1 class="text-secondary text-center text-xl">
+                        <span class="font-bold">记录数据</span>
+                        <span>
+                            <i class="fa fa-pencil-square fa-fw"></i>
+                        </span>
+                    </h1>
+                </div>
+
+                <div class="edit-data function-area hidden">
+                    <h1 class="text-secondary text-center text-xl">
+                        <span class="font-bold">查看数据</span>
+                        <span>
+                            <i class="fa fa-list-alt fa-fw"></i>
+                        </span>
+                    </h1>
+                </div>
+
+                <div class="recommend function-area hidden">
+                    <h1 class="text-secondary text-center text-xl">
+                        <span class="font-bold">推荐餐品</span>
+                        <span>
+                            <i class="fa fa-cutlery fa-fw"></i>
+                        </span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </article>
+</body>
+<script>
+    function onRecordData() {
+        // Unhide the record data div
+        unhide('record-data');
+    }
+
+    function onEditData() {
+        // Unhide the record data div
+        unhide('edit-data');
+    }
+
+    function onRecommend() {
+        // Unhide the record data div
+        unhide('recommend');
+    }
+
+    function unhide(className) {
+        // Hide all function areas
+        let functionAreas = document.querySelectorAll('.function-area');
+        for (let i = 0; i < functionAreas.length; i++) {
+            functionAreas[i].classList.add('hidden');
+        }
+        // Unhide the current one
+        let element = document.querySelector('.' + className);
+        element.classList.remove('hidden');
+    }
+</script>
+
+</html>
