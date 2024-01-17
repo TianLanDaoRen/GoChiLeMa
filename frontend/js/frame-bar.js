@@ -1,6 +1,6 @@
 document.writeln("<meta name=\'wails-options\' content=\'noautoinject\' />");
-document.writeln("<link href=\'https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css\' rel=\'stylesheet\' type=\'text/css\' />");
 document.writeln("<link rel=\'stylesheet\' href=\'css/main.css\' />");
+document.writeln("<link href=\'https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css\' rel=\'stylesheet\' type=\'text/css\' />");
 document.writeln("<script src=\'https://cdn.tailwindcss.com\'></script>");
 document.writeln("<script src=\'js/font-awesome.js\'></script>");
 document.writeln("<script src=\'js/utils.js\'></script>");
@@ -18,7 +18,6 @@ document.writeln("                    <i class=\'fa fa-utensils\'></i>");
 document.writeln("                </span>");
 document.writeln("            </button>");
 document.writeln("        </div>");
-document.writeln("");
 document.writeln("    </div>");
 document.writeln("    <div class=\'navbar-center\'>");
 document.writeln("        <a class=\'btn btn-ghost text-base-content\'>");
@@ -41,7 +40,7 @@ document.writeln("                <strong style=\'font-size: large;\'>r</strong>
 document.writeln("            </button>");
 document.writeln("        </div>");
 document.writeln("    </div>");
-document.writeln("</nav></br>");
+document.writeln("</nav><br class=\'thin\' />");
 document.writeln("<nav class=\'btm-nav bg-base-100 text-secondary fixed bottom-0 left-0 right-0 has-shadow\' style=\'z-index: 29;\'>");
 document.writeln("    <a class=\'nav-btn\' href=\'/index.html\' target=\'_self\'>");
 document.writeln("        <i class=\'fa fa-home\'></i>");
