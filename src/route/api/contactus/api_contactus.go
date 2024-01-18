@@ -9,8 +9,9 @@ func ContactusRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	// Check valid call
 	valid := route_utils.CheckValidRequest(r)
 	if !valid {
-		invalid := route_utils.MakeDefaultJSONResponse(2401, "Invalid request")
-		route_utils.WriteJSONResponse(w, invalid)
+		errorCode := route_utils.ApiErrorCode["IRequest"]
+		apiError := route_utils.MakeDefaultJSONResponse(errorCode.Code, errorCode.Msg)
+		route_utils.WriteJSONResponse(w, apiError)
 		return
 	}
 	contact := make(map[string]interface{})

@@ -10,6 +10,14 @@
 
 <body>
     <article class="prose">
+        <dialog id="message_modal" class="modal">
+            <div class="modal-box">
+                <h3 id="message" class="font-bold text-lg text-center"></h3>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
         <div class="flex flex-col lg:flex-row px-3">
             <div class="grid grid-cols-1 w-full content-around">
                 <div class="text-primary text-xl text-center items-center justify-center flex">
@@ -143,6 +151,36 @@
                             <i class="fa fa-list-alt fa-fw"></i>
                         </span>
                     </h1>
+                    <div class="divider"></div>
+                    <div class="overflow-x-auto">
+                        <table class="table table-xs table-pin-rows">
+                            <!-- head -->
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" class="checkbox" id="check-all" />
+                                        </label>
+                                    </th>
+                                    <th>日期</th>
+                                    <th>餐品（馆）名</th>
+                                    <th>
+                                        <button type="submit" class="btn btn-ghost btn-disabled" id="delete-selected"
+                                            onclick="onSubmitDeleteSelected()">
+                                            <span>删除选定</span>
+                                            <span>
+                                                <i class="fa fa-trash fa-fw"></i>
+                                            </span>
+                                        </button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <!-- body -->
+                            <tbody id="data-table">
+                            </tbody>
+                        </table>
+                        <div class="join grid grid-cols-auto grid-flow-col-dense" id="pagination"></div>
+                    </div>
                 </div>
 
                 <div class="recommend function-area hidden">
@@ -165,7 +203,7 @@
         let yearOptions = document.querySelector('#year');
         let monthOptions = document.querySelector('#month');
         let dayOptions = document.querySelector('#day');
-        for (let i = 2000; i <= 2050; i++) {
+        for (let i = 2020; i <= 2070; i++) {
             let option = document.createElement('option');
             option.value = i;
             option.innerText = i + '年';
@@ -197,7 +235,7 @@
     function onSubmitRecord() {
         console.log("onSubmitRecord");
         event.preventDefault();
-        utils.getApiUrlAndBody("record").then((api) => {
+        utils.getApiUrlAndBody("recordfood").then((api) => {
             let api_url = api[0], body = api[1];
             // Add form serialize data to body
             let formData = new FormData(document.querySelector('.record-form'));
@@ -210,12 +248,20 @@
             Fetch(api_url, "POST", body)
                 .then(response => response.json())
                 .then(data => {
-                    // Retrieve email and vx
-                    let email = data.email;
-                    let vx = data.vx;
-                    // Update email and vx
-                    document.getElementById("emailInfo").innerText = email;
-                    document.getElementById("vxInfo").innerText = vx;
+                    // Retrieve message
+                    let message = data["message"];
+                    // Show message
+                    let message_title = document.querySelector('#message');
+                    message_title.innerText = message;
+                    let message_modal = document.querySelector('#message_modal');
+                    message_modal.showModal();  // Show modal
+                    // Close modal after 1000ms
+                    setTimeout(() => {
+                        message_modal.close();
+                    }, 1000);
+                    // Clear form
+                    document.querySelector('.record-form').reset();
+                    onRecordData();  // Reset year\month\day select options
                 })
                 .catch(error => {
                     console.error("Error:", error);
@@ -226,6 +272,194 @@
     function onEditData() {
         // Unhide the record data div
         unhide('edit-data');
+        // Request page 0
+        requestPage(0);
+    }
+
+    function requestPage(page) {
+        let check_all = document.querySelector('#check-all');
+        // Uncheck check-all checkbox
+        check_all.checked = false;
+        // Disable delete-selected button
+        let delete_selected = document.querySelector('#delete-selected');
+        delete_selected.classList.add('btn-disabled');
+        utils.getApiUrlAndBody("getfood").then((api) => {
+            let api_url = api[0], body = api[1];
+            body = body;
+            body["page"] = page;
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve data
+                    let items = data["items"];
+                    // Check if items is empty
+                    if (!items || items.length == 0) {
+                        // Try to request last page
+                        if (page > 0) {
+                            requestPage(page - 1);
+                            return;
+                        }
+                        // Show message
+                        let message_title = document.querySelector('#message');
+                        message_title.innerText = "没有数据";
+                        let message_modal = document.querySelector('#message_modal');
+                        message_modal.showModal();  // Show modal
+                        // Close modal after 1000ms
+                        setTimeout(() => {
+                            message_modal.close();
+                        }, 1000);
+                        // Clear data table
+                        let data_table = document.querySelector('#data-table');
+                        data_table.innerHTML = '';
+                        return;
+                    }
+                    let totalPages = data["totalPages"];
+
+                    // Set pagination
+                    let pagination = document.querySelector('#pagination');
+                    pagination.innerHTML = '';
+                    // First page button
+                    let firstBtn = document.createElement('button');
+                    firstBtn.classList.add('join-item', 'btn', 'btn-outline');
+                    firstBtn.innerHTML = '<i class="fa fa-fast-backward fa-fw"></i>'
+                    firstBtn.addEventListener('click', function () {
+                        requestPage(0);
+                    });
+                    pagination.appendChild(firstBtn);
+                    // Previous page button
+                    let prevBtn = document.createElement('button');
+                    prevBtn.classList.add('join-item', 'btn');
+                    prevBtn.innerHTML = '<i class="fa fa-arrow-left fa-fw"></i>'
+                    prevBtn.addEventListener('click', function () {
+                        if (page >= 1) {
+                            requestPage(page - 1);
+                        }
+                    });
+                    pagination.appendChild(prevBtn);
+                    // Page button this page
+                    pageBtn = document.createElement('button');
+                    pageBtn.classList.add('join-item', 'btn', 'page-btn');
+                    pageBtn.innerText = page + 1;
+                    pageBtn.addEventListener('click', function () {
+                        requestPage(page);
+                    });
+                    pagination.appendChild(pageBtn);
+                    // Next page button
+                    let nextBtn = document.createElement('button');
+                    nextBtn.classList.add('join-item', 'btn');
+                    nextBtn.innerHTML = '<i class="fa fa-arrow-right fa-fw"></i>'
+                    nextBtn.addEventListener('click', function () {
+                        if (page < totalPages - 1) {
+                            requestPage(page + 1);
+                        }
+                    });
+                    pagination.appendChild(nextBtn);
+                    // Last page button
+                    let lastBtn = document.createElement('button');
+                    lastBtn.classList.add('join-item', 'btn', 'btn-outline');
+                    lastBtn.innerHTML = '<i class="fa fa-fast-forward fa-fw"></i>'
+                    lastBtn.addEventListener('click', function () {
+                        requestPage(totalPages - 1);
+                    });
+                    pagination.appendChild(lastBtn);
+
+                    // Show data
+                    let data_table = document.querySelector('#data-table');
+                    data_table.innerHTML = '';
+                    for (let i = 0; i < items.length; i++) {
+                        let item = items[i];
+                        let tr = document.createElement('tr');
+                        let td = document.createElement('td');
+                        let label = document.createElement('label');
+                        let input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.classList.add('checkbox');
+                        input.value = item['id'];
+                        input.addEventListener('change', function () {
+                            // Enable delete-selected button if any checkbox is checked
+                            let checkboxes = document.querySelectorAll('.checkbox:not(#check-all)');
+                            for (let i = 0; i < checkboxes.length; i++) {
+                                if (checkboxes[i].checked) {
+                                    delete_selected.classList.remove('btn-disabled');
+                                    return;
+                                }
+                            }
+                            // Disable delete-selected button if no checkbox is checked
+                            delete_selected.classList.add('btn-disabled');
+                        })
+                        label.appendChild(input);
+                        td.appendChild(label);
+                        tr.appendChild(td);
+                        td = document.createElement('td');
+                        td.innerText = item['date'];
+                        tr.appendChild(td);
+                        td = document.createElement('td');
+                        td.innerText = item['food'];
+                        // food td takes span 2
+                        td.setAttribute('colspan', '2');
+                        tr.appendChild(td);
+                        data_table.appendChild(tr);
+                    }
+                    // Add event listener to check-all checkbox
+                    check_all.addEventListener('change', function () {
+                        let checkboxes = document.querySelectorAll('.checkbox');
+                        for (let i = 0; i < checkboxes.length; i++) {
+                            checkboxes[i].checked = this.checked;
+                        }
+                        if (this.checked) {
+                            delete_selected.classList.remove('btn-disabled');
+                        } else {
+                            delete_selected.classList.add('btn-disabled');
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    function onSubmitDeleteSelected() {
+        console.log("onSubmitDeleteSelected");
+        event.preventDefault();
+        // Get all checked checkboxes except check-all checkbox
+        let checkboxes = document.querySelectorAll('.checkbox:checked:not(#check-all)');
+        let ids = [];
+        for (let i = 0; i < checkboxes.length; i++) {
+            ids.push(parseInt(checkboxes[i].value));
+        }
+        console.log(ids);
+        // Request delete
+        utils.getApiUrlAndBody("deletefood").then((api) => {
+            let api_url = api[0], body = api[1];
+            body = body;
+            body["ids"] = ids;
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve message
+                    let message = data["message"];
+                    // Show message
+                    let message_title = document.querySelector('#message');
+                    message_title.innerText = message;
+                    let message_modal = document.querySelector('#message_modal');
+                    message_modal.showModal();  // Show modal
+                    // Close modal after 1000ms
+                    setTimeout(() => {
+                        message_modal.close();
+                    }, 1000);
+                    // Request now page
+                    let pageBtn = document.querySelector('.page-btn');
+                    requestPage(pageBtn.innerText - 1);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
     }
 
     function onRecommend() {

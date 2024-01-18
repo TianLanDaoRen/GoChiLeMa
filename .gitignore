@@ -29,3 +29,6 @@ vendor/
 
 # vscode
 .vscode/
+
+# User data directory
+data/

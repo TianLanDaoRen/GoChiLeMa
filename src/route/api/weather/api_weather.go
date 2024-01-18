@@ -14,16 +14,18 @@ func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	// Check valid call
 	valid := route_utils.CheckValidRequest(r)
 	if !valid {
-		invalid := route_utils.MakeDefaultJSONResponse(2401, "Invalid request")
-		route_utils.WriteJSONResponse(w, invalid)
+		errorCode := route_utils.ApiErrorCode["IRequest"]
+		apiError := route_utils.MakeDefaultJSONResponse(errorCode.Code, errorCode.Msg)
+		route_utils.WriteJSONResponse(w, apiError)
 		return
 	}
 	// Get IP
 	if global.IP == "" {
 		ip, err := location.GetExternalIPv4()
 		if err != nil {
-			failed := route_utils.MakeDefaultJSONResponse(2402, "Failed to get external IPv4")
-			route_utils.WriteJSONResponse(w, failed)
+			errorCode := route_utils.ApiErrorCode["FGetExternalIpv4"]
+			apiError := route_utils.MakeDefaultJSONResponse(errorCode.Code, errorCode.Msg)
+			route_utils.WriteJSONResponse(w, apiError)
 			return
 		}
 		global.IP = ip
@@ -32,8 +34,9 @@ func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	if global.Lat == 0 || global.Lon == 0 {
 		loc, err := location.GetLocationInfo(global.IP)
 		if err != nil {
-			failed := route_utils.MakeDefaultJSONResponse(2403, "Failed to get location information")
-			route_utils.WriteJSONResponse(w, failed)
+			errorCode := route_utils.ApiErrorCode["FGetLocationInfo"]
+			apiError := route_utils.MakeDefaultJSONResponse(errorCode.Code, errorCode.Msg)
+			route_utils.WriteJSONResponse(w, apiError)
 			return
 		}
 		global.Lat = loc.Lat
@@ -49,8 +52,9 @@ func WeatherRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 		}
 		weatherInfo, ok := weatherApi.GetWeather()
 		if !ok {
-			failed := route_utils.MakeDefaultJSONResponse(2404, "Failed to get weather information")
-			route_utils.WriteJSONResponse(w, failed)
+			errorCode := route_utils.ApiErrorCode["FGetWeatherInfo"]
+			apiError := route_utils.MakeDefaultJSONResponse(errorCode.Code, errorCode.Msg)
+			route_utils.WriteJSONResponse(w, apiError)
 			return
 		}
 		global.WeatherInfo = &WEATHER.Weather{}

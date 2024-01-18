@@ -17,6 +17,22 @@ type RequestBody struct {
 	Ts   float64 `json:"ts"`
 }
 
+type ErrorCode struct {
+	Code int
+	Msg  string
+}
+
+var ApiErrorCode = map[string]ErrorCode{
+	"FReadRequestBody": {2400, "Failed to read request body"},
+	"IRequest":         {2401, "Invalid request"},
+	"FGetExternalIpv4": {2402, "Failed to get external IPv4"},
+	"FGetLocationInfo": {2403, "Failed to get location information"},
+	"FGetWeatherInfo":  {2404, "Failed to get weather information"},
+	"IDate":            {2405, "Invalid date"},
+	"IFood":            {2406, "Invalid food"},
+	"IPage":            {2407, "Invalid page"},
+}
+
 func MakeDefaultJSONResponse(err int, msg string) map[string]interface{} {
 	jsonResponse := make(map[string]interface{})
 	jsonResponse["error"] = err
