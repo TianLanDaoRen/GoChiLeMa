@@ -539,10 +539,10 @@
                         return;
                     }
                     recommend = sortObject(recommend);
-                    // Put first 6 messages into table
+                    // Put first 5 recommends into table
                     let recommend_table = document.querySelector('#recommend-table');
                     recommend_table.innerHTML = '';
-                    for (let i = 0; i < recommend.length; i++) {
+                    for (let i = 0; i < 5; i++) {
                         let item = recommend[i];
                         let tr = document.createElement('tr');
                         let td = document.createElement('td');
