@@ -6,12 +6,11 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <script type="text/javascript" src="js/frame-bar.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
 </head>
 
 <body>
-    <div class="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm px-2">
-        <div class="card glass bg-base-100 shadow-xl text-base-content">
+    <div class="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm px-2 content-center">
+        <div class="card grid glass bg-base-100 shadow-xl text-base-content content-evenly">
             <div class="card-body items-center text-center prose">
                 <h1 class="card-title">
                     IP信息
@@ -33,7 +32,7 @@
             </div>
         </div>
         <div class="grid gap-4">
-            <div class="card glass bg-base-100 shadow-xl text-base-content">
+            <div class="card grid glass bg-base-100 shadow-xl text-base-content content-evenly">
                 <div class="card-body items-center text-center prose">
                     <h1 class="card-title">
                         系统信息
@@ -41,7 +40,7 @@
                     <span id="osInfo"></span>
                 </div>
             </div>
-            <div class="card glass bg-base-100 shadow-xl text-base-content">
+            <div class="card grid glass bg-base-100 shadow-xl text-base-content content-evenly">
                 <div class="card-body items-center text-center prose">
                     <h1 class="card-title">
                         我的信息
@@ -53,7 +52,7 @@
                     <span>（点击下方联系我们）</span>
                 </div>
             </div>
-            <div class="card glass bg-base-100 shadow-xl text-base-content">
+            <div class="card grid glass bg-base-100 shadow-xl text-base-content content-evenly">
                 <div class="card-body items-center text-center prose">
                     <h1 class="card-title">
                         天气信息
@@ -64,8 +63,113 @@
                 </div>
             </div>
         </div>
-
     </div>
 </body>
+<script>
+    // Callback functions
+    function onRequestOsInfo() {
+        utils.getApiUrlAndBody("osinfo").then((api) => {
+            let api_url = api[0], body = api[1];
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve os info
+                    let info = data.info;
+                    // Update os info
+                    document.getElementById("osInfo").innerText = info;
+                }
+                )
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    function onRequestContactUs() {
+        utils.getApiUrlAndBody("contactus").then((api) => {
+            let api_url = api[0], body = api[1];
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve email and vx
+                    let email = data.email;
+                    let vx = data.vx;
+                    // Update email and vx
+                    document.getElementById("emailInfo").innerText = email;
+                    document.getElementById("vxInfo").innerText = vx;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    function onRequestIpAndLocation() {
+        utils.getApiUrlAndBody("ip").then((api) => {
+            let api_url = api[0], body = api[1];
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve
+                    let ip = data.ip;
+                    let city = data.city;
+                    let lat = data.lat;
+                    let lon = data.lon;
+                    let timezone = data.timezone;
+                    let isp = data.isp;
+                    let as = data.as;
+                    // Update
+                    document.getElementById("ipInfo").innerText = ip;
+                    document.getElementById("locationInfo").innerText = city;
+                    document.getElementById("latInfo").innerText = lat;
+                    document.getElementById("lonInfo").innerText = lon;
+                    document.getElementById("timezoneInfo").innerText = timezone;
+                    document.getElementById("ispInfo").innerText = isp;
+                    document.getElementById("asInfo").innerText = as;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    function onRequestWeather() {
+        utils.getApiUrlAndBody("weather").then((api) => {
+            let api_url = api[0], body = api[1];
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve weather info
+                    let temp = data.temp;
+                    let description = data.description;
+                    // Update weather info
+                    document.getElementById("timeInfo").innerText = new Date().toString();
+                    document.getElementById("tempInfo").innerText = temp + "℃";
+                    document.getElementById("tempDesc").innerText = description;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    // Set dom loaded event
+    document.addEventListener("DOMContentLoaded", () => {
+        // Request os info
+        onRequestOsInfo();
+        // Request ip and location
+        onRequestIpAndLocation();
+        // Request weather
+        onRequestWeather();
+    });
+</script>
 
 </html>

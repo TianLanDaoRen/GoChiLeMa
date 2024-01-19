@@ -26,3 +26,9 @@ build/
 
 # Go vendor directory
 vendor/
+
+# vscode
+.vscode/
+
+# User data directory
+data/

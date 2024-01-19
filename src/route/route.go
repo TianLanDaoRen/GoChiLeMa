@@ -4,9 +4,13 @@ import (
 	"GoChiLeMaWails/src/global"
 	api_contactus "GoChiLeMaWails/src/route/api/contactus"
 	api_csort "GoChiLeMaWails/src/route/api/csort"
+	api_deletefood "GoChiLeMaWails/src/route/api/deletefood"
+	api_getfood "GoChiLeMaWails/src/route/api/getfood"
 	api_gosort "GoChiLeMaWails/src/route/api/gosort"
 	api_ip "GoChiLeMaWails/src/route/api/ip"
 	api_osinfo "GoChiLeMaWails/src/route/api/osinfo"
+	api_recommendfood "GoChiLeMaWails/src/route/api/recommendfood"
+	api_recordfood "GoChiLeMaWails/src/route/api/recordfood"
 	api_weather "GoChiLeMaWails/src/route/api/weather"
 	"fmt"
 	"net/http"
@@ -19,9 +23,13 @@ func Init() {
 	// Register routes here
 	RegisterRouteHandlerFunc("/api/contactus", api_contactus.ContactusRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/csort", api_csort.CsortRouteHandlerFunc)
+	RegisterRouteHandlerFunc("/api/deletefood", api_deletefood.DeletefoodRouteHandlerFunc)
+	RegisterRouteHandlerFunc("/api/getfood", api_getfood.GetfoodRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/gosort", api_gosort.GosortRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/ip", api_ip.IpRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/osinfo", api_osinfo.OsinfoRouteHandlerFunc)
+	RegisterRouteHandlerFunc("/api/recommendfood", api_recommendfood.RecommendfoodRouteHandlerFunc)
+	RegisterRouteHandlerFunc("/api/recordfood", api_recordfood.RecordfoodRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/weather", api_weather.WeatherRouteHandlerFunc)
 	fmt.Println("Registered routes:", RouteHandlers)
 	// Handle all routes and start the server

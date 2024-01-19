@@ -122,21 +122,18 @@
         let audio = document.getElementsByTagName("audio")[0];
         if (audio) {
             audio.style = "display: -webkit-inline-box;";
-            console.log("Set audio style");
             clearInterval(interval);
         }
         // Set el-upload-dragger style
         let elUploadDragger = document.querySelector(".el-upload-dragger");
         if (elUploadDragger) {
             elUploadDragger.style = "background-color: oklch(var(--b2));";
-            console.log("Set el-upload-dragger style");
             clearInterval(interval);
         }
         // Set el-table style
         let elTable = document.querySelector(".el-table");
         if (elTable) {
             elTable.classList.add("table");
-            console.log("Set el-table style");
             clearInterval(interval);
         }
     }, 5);

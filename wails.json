@@ -1,5 +1,5 @@
 {
-  "version": "4.24.1.13",
+  "version": "5.24.1.19",
   "name": "GoChiLeMaWails",
   "outputfilename": "GoChiLeMa",
   "author": {
@@ -9,7 +9,7 @@
   "info": {
     "companyName": "EZStudio",
     "productName": "GoChiLeMa",
-    "productVersion": "4.24.1.13",
+    "productVersion": "5.24.1.19",
     "copyright": "Copyright (@) 2024 TianLanDaoRen",
     "comments": "GoChiLeMa is built with Wails."
   },

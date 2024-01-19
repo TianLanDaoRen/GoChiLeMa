@@ -18,6 +18,11 @@
     src: url('../fonts/Marlett.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'CangErJinKai';
+    src: url('../fonts/CangErJinKai.ttf') format('truetype');
+}
+
 html {
     background-size: 100% 100%;
 }
@@ -35,11 +40,31 @@ body {
     /* Opera私有属性 */
     user-select: none;
     /* CSS3属性 */
-    padding-bottom: 65px;
+    padding-bottom: 70px;
+    /* Font */
+    font-family:
+        'CangErJinKai',
+        ui-sans-serif,
+        system-ui,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 audio {
     display: -webkit-inline-box;
+}
+
+br.thin {
+    content: "A" !important;
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.btn {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .has-shadow {
@@ -49,4 +74,5 @@ audio {
 .btm-nav {
     height: 60px;
     margin: 3px;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
