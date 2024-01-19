@@ -4,19 +4,35 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	_ "embed"
 	"encoding/hex"
+	"encoding/json"
+	"fmt"
 )
 
-type Encrypto struct{}
+//go:embed key.json
+var key string
+
+type Encrypto struct {
+	Key string `json:"key"`
+	Iv  string `json:"Iv"`
+}
 
 func NewEncrypto() *Encrypto {
-	return &Encrypto{}
+	// Unmarshal key string to json
+	var encrypto Encrypto
+	err := json.Unmarshal([]byte(key), &encrypto)
+	if err != nil {
+		fmt.Println(err)
+		return &Encrypto{}
+	}
+	return &encrypto
 }
 
 func (e *Encrypto) Encrypt(plaintext string) string {
 	// ASE-256-CBC
-	bKey := []byte("g4t8g2b1hj4yu5hrt8d4g25iuj18g59k")
-	bIv := []byte("s83jf8d4g2h1j8d4")
+	bKey := []byte(e.Key)
+	bIv := []byte(e.Iv)
 	bPlaintext := e.PKCS5Padding([]byte(plaintext), aes.BlockSize)
 	block, err := aes.NewCipher(bKey)
 	if err != nil {
@@ -36,8 +52,8 @@ func (e *Encrypto) PKCS5Padding(ciphertext []byte, blockSize int) []byte {
 
 func (e *Encrypto) Decrypt(ciphertext string) string {
 	// ASE-256-CBC
-	bKey := []byte("g4t8g2b1hj4yu5hrt8d4g25iuj18g59k")
-	bIv := []byte("s83jf8d4g2h1j8d4")
+	bKey := []byte(e.Key)
+	bIv := []byte(e.Iv)
 	// base64 decode
 	cipherTextDecoded, err := hex.DecodeString(ciphertext)
 	if err != nil {

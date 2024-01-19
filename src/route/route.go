@@ -9,6 +9,7 @@ import (
 	api_gosort "GoChiLeMaWails/src/route/api/gosort"
 	api_ip "GoChiLeMaWails/src/route/api/ip"
 	api_osinfo "GoChiLeMaWails/src/route/api/osinfo"
+	api_recommendfood "GoChiLeMaWails/src/route/api/recommendfood"
 	api_recordfood "GoChiLeMaWails/src/route/api/recordfood"
 	api_weather "GoChiLeMaWails/src/route/api/weather"
 	"fmt"
@@ -27,6 +28,7 @@ func Init() {
 	RegisterRouteHandlerFunc("/api/gosort", api_gosort.GosortRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/ip", api_ip.IpRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/osinfo", api_osinfo.OsinfoRouteHandlerFunc)
+	RegisterRouteHandlerFunc("/api/recommendfood", api_recommendfood.RecommendfoodRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/recordfood", api_recordfood.RecordfoodRouteHandlerFunc)
 	RegisterRouteHandlerFunc("/api/weather", api_weather.WeatherRouteHandlerFunc)
 	fmt.Println("Registered routes:", RouteHandlers)

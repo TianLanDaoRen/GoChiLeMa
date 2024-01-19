@@ -2,17 +2,14 @@ let API_ROOT = "http://localhost:23456/api";
 
 // Callbacks
 function onOpenLinkInExternalBrowser(url) {
-    console.log("onOpenLinkInExternalBrowser");
     window.GoJs.OpenLinkInExternalBrowser(url);
 }
 
 function onMinWindow() {
-    console.log("requestWindowMin");
     window.runtime.WindowMinimise();
 }
 
 function onToggleWindow() {
-    console.log("requestToggleWindow");
     window.runtime.WindowIsMaximised().then((isMaximised) => {
         if (isMaximised) {
             window.runtime.WindowUnmaximise();
@@ -23,7 +20,6 @@ function onToggleWindow() {
 }
 
 function onCloseWindow() {
-    console.log("requestWindowClose");
     window.runtime.Quit();
 }
 

@@ -68,7 +68,6 @@
 <script>
     // Callback functions
     function onRequestOsInfo() {
-        console.log("requestOsInfo");
         utils.getApiUrlAndBody("osinfo").then((api) => {
             let api_url = api[0], body = api[1];
             body = JSON.stringify(body);
@@ -76,7 +75,6 @@
             Fetch(api_url, "POST", body)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     // Retrieve os info
                     let info = data.info;
                     // Update os info
@@ -90,7 +88,6 @@
     }
 
     function onRequestContactUs() {
-        console.log("requestContactUs");
         utils.getApiUrlAndBody("contactus").then((api) => {
             let api_url = api[0], body = api[1];
             body = JSON.stringify(body);
@@ -112,7 +109,6 @@
     }
 
     function onRequestIpAndLocation() {
-        console.log("requestIP");
         utils.getApiUrlAndBody("ip").then((api) => {
             let api_url = api[0], body = api[1];
             body = JSON.stringify(body);
@@ -120,7 +116,6 @@
             Fetch(api_url, "POST", body)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     // Retrieve
                     let ip = data.ip;
                     let city = data.city;
@@ -145,7 +140,6 @@
     }
 
     function onRequestWeather() {
-        console.log("requestWeather");
         utils.getApiUrlAndBody("weather").then((api) => {
             let api_url = api[0], body = api[1];
             body = JSON.stringify(body);
@@ -153,7 +147,6 @@
             Fetch(api_url, "POST", body)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     // Retrieve weather info
                     let temp = data.temp;
                     let description = data.description;
@@ -168,26 +161,8 @@
         });
     }
 
-    function onRequestGoSort() {
-        console.log("requestGoSort");
-        utils.getApiUrlAndBody("gosort").then((api) => {
-            let api_url = api[0], body = api[1];
-            body = JSON.stringify(body);
-            // Fetch data
-            Fetch(api_url, "POST", body)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-        });
-    }
-
     // Set dom loaded event
     document.addEventListener("DOMContentLoaded", () => {
-        console.log("DOMContentLoaded");
         // Request os info
         onRequestOsInfo();
         // Request ip and location

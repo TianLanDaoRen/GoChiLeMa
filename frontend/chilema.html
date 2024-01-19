@@ -153,7 +153,7 @@
                     </h1>
                     <div class="divider"></div>
                     <div class="overflow-x-auto">
-                        <table class="table table-xs table-pin-rows">
+                        <table class="table table-pin-rows">
                             <!-- head -->
                             <thead>
                                 <tr>
@@ -189,6 +189,30 @@
                         <span>
                             <i class="fa fa-cutlery fa-fw"></i>
                         </span>
+                        <div class="divider"></div>
+                        <div class="overflow-x-auto">
+                            <table class="table table-lg table-pin-rows">
+                                <!-- head -->
+                                <thead>
+                                    <tr>
+                                        <th>餐品（馆）名</th>
+                                        <th>推荐度</th>
+                                    </tr>
+                                </thead>
+                                <!-- body -->
+                                <tbody id="recommend-table">
+                                </tbody>
+                            </table>
+                            <a class="recommend-depth" hidden>1</a>
+                            <button class="btn w-full text-lg" onclick="onRecommendDeeper()">
+                                深度推荐
+                            </button>
+                        </div>
+                        <span class="text-sm text-info">
+                            *注：默认根据您最近的用餐进行下一餐的推荐</br>
+                            如果一直深度推荐直到推荐度保持不变</br>
+                            则此时的推荐度可在一定程度上表示您对各餐品的喜好程度
+                        </span>
                     </h1>
                 </div>
             </div>
@@ -196,6 +220,7 @@
     </article>
 </body>
 <script>
+    // Record function
     function onRecordData() {
         // Unhide the record data div
         unhide('record-data');
@@ -233,7 +258,6 @@
     }
 
     function onSubmitRecord() {
-        console.log("onSubmitRecord");
         event.preventDefault();
         utils.getApiUrlAndBody("recordfood").then((api) => {
             let api_url = api[0], body = api[1];
@@ -243,7 +267,6 @@
                 body[key] = value;
             }
             body = JSON.stringify(body);
-            console.log(body);
             // Fetch data
             Fetch(api_url, "POST", body)
                 .then(response => response.json())
@@ -269,6 +292,7 @@
         });
     }
 
+    // Edit function
     function onEditData() {
         // Unhide the record data div
         unhide('edit-data');
@@ -287,6 +311,8 @@
             let api_url = api[0], body = api[1];
             body = body;
             body["page"] = page;
+            body["perPage"] = 6;
+            body["reversed"] = true;
             body = JSON.stringify(body);
             // Fetch data
             Fetch(api_url, "POST", body)
@@ -345,6 +371,11 @@
                     pageBtn.addEventListener('click', function () {
                         requestPage(page);
                     });
+                    // totPage
+                    totPage = document.createElement('span');
+                    totPage.classList.add('text-xs');
+                    totPage.innerText = '/' + totalPages;
+                    pageBtn.appendChild(totPage);
                     pagination.appendChild(pageBtn);
                     // Next page button
                     let nextBtn = document.createElement('button');
@@ -368,6 +399,7 @@
                     // Show data
                     let data_table = document.querySelector('#data-table');
                     data_table.innerHTML = '';
+                    // In reverse
                     for (let i = 0; i < items.length; i++) {
                         let item = items[i];
                         let tr = document.createElement('tr');
@@ -422,7 +454,6 @@
     }
 
     function onSubmitDeleteSelected() {
-        console.log("onSubmitDeleteSelected");
         event.preventDefault();
         // Get all checked checkboxes except check-all checkbox
         let checkboxes = document.querySelectorAll('.checkbox:checked:not(#check-all)');
@@ -430,7 +461,6 @@
         for (let i = 0; i < checkboxes.length; i++) {
             ids.push(parseInt(checkboxes[i].value));
         }
-        console.log(ids);
         // Request delete
         utils.getApiUrlAndBody("deletefood").then((api) => {
             let api_url = api[0], body = api[1];
@@ -454,7 +484,7 @@
                     }, 1000);
                     // Request now page
                     let pageBtn = document.querySelector('.page-btn');
-                    requestPage(pageBtn.innerText - 1);
+                    requestPage(parseInt(pageBtn.firstChild.textContent) - 1);
                 })
                 .catch(error => {
                     console.error("Error:", error);
@@ -462,11 +492,82 @@
         });
     }
 
+    // Recommend function
     function onRecommend() {
         // Unhide the record data div
         unhide('recommend');
+        // By default, request recommend depth=1
+        let recommendDepthElm = document.querySelector('.recommend-depth');
+        recommendDepthElm.innerText = '1';
+        requestRecommend(1);
     }
 
+    function sortObject(obj) {
+        items = Object.keys(obj).map(function (key) {
+            return [key, obj[key]];
+        });
+        items.sort(function (first, second) {
+            return second[1] - first[1];
+        });
+        return items;
+    }
+
+    function requestRecommend(n) {
+        utils.getApiUrlAndBody("recommendfood").then((api) => {
+            let api_url = api[0], body = api[1];
+            body['n'] = n
+            body = JSON.stringify(body);
+            // Fetch data
+            Fetch(api_url, "POST", body)
+                .then(response => response.json())
+                .then(data => {
+                    // Retrieve message
+                    let recommend = data["recommend"];
+                    if (!recommend) {
+                        // Show message
+                        let message_title = document.querySelector('#message');
+                        message_title.innerText = "没有数据";
+                        let message_modal = document.querySelector('#message_modal');
+                        message_modal.showModal();  // Show modal
+                        // Close modal after 1000ms
+                        setTimeout(() => {
+                            message_modal.close();
+                        }, 1000);
+                        // Clear recommend table
+                        let recommend_table = document.querySelector('#recommend-table');
+                        recommend_table.innerHTML = '';
+                        return;
+                    }
+                    recommend = sortObject(recommend);
+                    // Put first 6 messages into table
+                    let recommend_table = document.querySelector('#recommend-table');
+                    recommend_table.innerHTML = '';
+                    for (let i = 0; i < recommend.length; i++) {
+                        let item = recommend[i];
+                        let tr = document.createElement('tr');
+                        let td = document.createElement('td');
+                        td.innerText = item[0];
+                        tr.appendChild(td);
+                        td = document.createElement('td');
+                        td.innerText = Number(item[1] * 100).toFixed(1) + '%';
+                        tr.appendChild(td);
+                        recommend_table.appendChild(tr);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    function onRecommendDeeper() {
+        let recommendDepthElm = document.querySelector('.recommend-depth');
+        let depth = parseInt(recommendDepthElm.innerText) + 1;
+        recommendDepthElm.innerText = depth.toString();
+        requestRecommend(depth);
+    }
+
+    // Helper function
     function unhide(className) {
         // Hide all function areas
         let functionAreas = document.querySelectorAll('.function-area');

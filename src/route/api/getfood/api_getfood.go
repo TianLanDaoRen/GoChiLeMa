@@ -4,10 +4,13 @@ import (
 	"GoChiLeMaWails/src/database"
 	route_utils "GoChiLeMaWails/src/route/utils"
 	"net/http"
+	"sort"
 )
 
 type RequestBody struct {
-	Page int `json:"page"`
+	Page     int  `json:"page"`
+	PerPage  int  `json:"perPage"`
+	Reversed bool `json:"reversed"`
 }
 
 func GetfoodRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
@@ -30,8 +33,14 @@ func GetfoodRouteHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	}
 	// Load foodtable
 	foodTable := database.NewFoodTable("data/food.json")
+	// If reversed
+	if body.Reversed {
+		sort.Slice(foodTable.Items, func(i, j int) bool {
+			return foodTable.Items[i].Id > foodTable.Items[j].Id
+		})
+	}
 	// Check if page is invalid
-	itemsPerPage := 6
+	itemsPerPage := body.PerPage
 	totalPages := len(foodTable.Items) / itemsPerPage
 	if len(foodTable.Items)%itemsPerPage != 0 {
 		totalPages++
